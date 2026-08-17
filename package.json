@@ -1,0 +1,10 @@
+{
+  "name": "adhkar-challenge",
+  "version": "1.2.0",
+  "private": true,
+  "description": "Defis d'adhkar entre amis — fonctions de notification",
+  "dependencies": {
+    "web-push": "^3.6.7",
+    "firebase-admin": "^12.7.0"
+  }
+}

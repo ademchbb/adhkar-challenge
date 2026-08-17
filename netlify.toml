@@ -1,0 +1,22 @@
+# Configuration Netlify — Adhkar Challenge
+# Le site est servi tel quel (pas de build) ; les dépendances npm des
+# fonctions sont installées automatiquement grâce à package.json.
+
+[build]
+  publish = "."
+
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
+
+# Le service worker ne doit jamais être servi depuis le cache du CDN,
+# sinon les mises à jour de l'app mettent des heures à arriver.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"

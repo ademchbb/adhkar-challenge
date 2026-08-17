@@ -1,0 +1,6 @@
+node_modules/
+.netlify/
+VAPID_KEYS.txt
+serviceAccount*.json
+.env
+.DS_Store

@@ -1,0 +1,2614 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Adhkar Challenge</title>
+<meta name="description" content="Défis d'adhkar entre amis — concourez dans le bien.">
+<meta name="theme-color" content="#0E6B4F">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Adhkar">
+<style>
+  :root{
+    --bg:#F3F6F1; --surface:#FFFFFF; --surface2:#EBF0E8;
+    --ink:#15251E; --muted:#5C6E64; --line:#DBE3D9;
+    --emerald:#0E6B4F; --emerald-ink:#0A4A38; --on-emerald:#F2F7F0;
+    --gold:#A8811F; --gold-soft:#F1E5C6; --track:#E2E8DF;
+    --danger:#A64533; --shadow:0 1px 2px rgba(21,37,30,.06),0 8px 24px rgba(21,37,30,.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A1310; --surface:#121F19; --surface2:#182A21;
+      --ink:#E9EFEA; --muted:#8FA398; --line:#243729;
+      --emerald:#3FA37C; --emerald-ink:#8FD8B6; --on-emerald:#06231A;
+      --gold:#D9B45E; --gold-soft:#33290F; --track:#22352A;
+      --danger:#E08A76; --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A1310; --surface:#121F19; --surface2:#182A21;
+    --ink:#E9EFEA; --muted:#8FA398; --line:#243729;
+    --emerald:#3FA37C; --emerald-ink:#8FD8B6; --on-emerald:#06231A;
+    --gold:#D9B45E; --gold-soft:#33290F; --track:#22352A;
+    --danger:#E08A76; --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F3F6F1; --surface:#FFFFFF; --surface2:#EBF0E8;
+    --ink:#15251E; --muted:#5C6E64; --line:#DBE3D9;
+    --emerald:#0E6B4F; --emerald-ink:#0A4A38; --on-emerald:#F2F7F0;
+    --gold:#A8811F; --gold-soft:#F1E5C6; --track:#E2E8DF;
+    --danger:#A64533; --shadow:0 1px 2px rgba(21,37,30,.06),0 8px 24px rgba(21,37,30,.07);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+  html[dir="rtl"] body{
+    font-family:"Segoe UI","Geeza Pro","Damascus",system-ui,"Amiri",sans-serif;
+  }
+  .ar{
+    font-family:"Amiri","Scheherazade New","Geeza Pro","Traditional Arabic","Arabic Typesetting",serif;
+    direction:rtl; line-height:1.9;
+  }
+
+  #app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+  #view{flex:1;padding:calc(16px + env(safe-area-inset-top, 0px)) 18px 96px}
+
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  .salam{font-size:22px;font-weight:700;letter-spacing:-.01em}
+  html[dir="rtl"] .salam{letter-spacing:0}
+  .topright{display:flex;align-items:center;gap:10px}
+  .date{font-size:12.5px;color:var(--muted);text-transform:capitalize}
+  .langbtn{border:1px solid var(--line);background:var(--surface);color:var(--emerald);
+    font-weight:700;font-size:12px;border-radius:16px;padding:5px 12px;cursor:pointer;font-family:inherit}
+  .bismillah{font-size:19px;color:var(--emerald);text-align:center;margin:6px 0 18px}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+  .card h3{margin:0 0 2px;font-size:15px;font-weight:700}
+  .sub{font-size:12.5px;color:var(--muted)}
+  .label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:22px 0 10px}
+  html[dir="rtl"] .label{letter-spacing:0;font-size:12.5px}
+  .label:first-child{margin-top:0}
+
+  .hero{display:flex;gap:12px}
+  .hero .card{flex:1;margin:0;text-align:center;padding:14px 8px}
+  .hero .big{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--emerald);line-height:1.1}
+  .hero .big.gold{color:var(--gold)}
+  .hero .cap{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .day-ok{margin:12px 0 0;padding:10px 14px;border-radius:12px;background:var(--gold-soft);color:var(--gold);
+    font-size:13.5px;font-weight:600;text-align:center;display:none}
+
+  .row{display:flex;align-items:center;gap:14px;padding:13px 14px;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:10px;cursor:pointer;
+    transition:transform .08s ease}
+  .row:active{transform:scale(.985)}
+  .row .info{flex:1;min-width:0}
+  .row .t{font-size:14.5px;font-weight:650}
+  .row .s{font-size:12px;color:var(--muted);margin-top:1px}
+  .row .arline{font-size:17px;color:var(--emerald-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}
+  .arline{font-size:17px;color:var(--emerald-ink)}
+  .ring{width:46px;height:46px;flex:none;position:relative}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .n{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .ring.done .n{color:var(--gold)}
+
+  .chips{display:flex;gap:10px;margin-bottom:12px}
+  .chip{flex:1;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+    font-size:13.5px;font-weight:650;text-align:center;cursor:pointer;color:var(--muted)}
+  .chip.on{background:var(--emerald);border-color:var(--emerald);color:var(--on-emerald)}
+  .chk{display:flex;align-items:flex-start;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .chk:last-child{border-bottom:none}
+  .box{width:24px;height:24px;flex:none;border-radius:8px;border:2px solid var(--line);margin-top:1px;
+    display:flex;align-items:center;justify-content:center;color:transparent;font-size:14px;transition:all .15s}
+  .chk.on .box{background:var(--emerald);border-color:var(--emerald);color:var(--on-emerald)}
+  .chk .t{font-size:14px;font-weight:600}
+  .chk.on .t{color:var(--muted);text-decoration:line-through}
+  .chk .d{font-size:12px;color:var(--muted)}
+  .chkbody{flex:1;min-width:0}
+  .boxwrap{padding:6px;margin:-6px;display:flex;align-items:flex-start;cursor:pointer}
+  .chk .details{display:none;margin-top:10px}
+  .chk.exp .details{display:block}
+  .chk .fulltext{font-size:19px;line-height:2.15;color:var(--emerald-ink);
+    padding:12px 13px;background:var(--surface2);border-radius:10px}
+  .chk .trad{font-size:12.5px;line-height:1.7;color:var(--muted);margin-top:9px}
+  .chk .fadl{font-size:12px;line-height:1.6;color:var(--gold);margin-top:7px}
+  .chk.exp .t{text-decoration:none;color:var(--ink)}
+  .caret{color:var(--muted);font-size:10px;margin-inline-start:4px}
+  .progressline{height:6px;border-radius:3px;background:var(--track);overflow:hidden;margin:4px 0 14px}
+  .progressline i{display:block;height:100%;background:var(--emerald);border-radius:3px;transition:width .3s}
+  .progressline i.gold{background:var(--gold)}
+
+  .teaser{opacity:.75}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--gold-soft);color:var(--gold);border-radius:6px;padding:3px 8px;margin-bottom:6px}
+  html[dir="rtl"] .badge{letter-spacing:0;font-size:12px}
+
+  .bars{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:14px}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+  .bar i{display:block;width:100%;max-width:34px;border-radius:6px 6px 3px 3px;background:var(--emerald);min-height:3px;transition:height .4s}
+  .bar.today i{background:var(--gold)}
+  .bar b{font-size:10.5px;color:var(--muted);font-weight:600}
+  .bar .v{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .statgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .statgrid .card{margin:0;text-align:center}
+  .statgrid .big{font-size:26px;font-weight:700;color:var(--emerald);font-variant-numeric:tabular-nums}
+  .statrow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+  .statrow:last-child{border-bottom:none}
+  .statrow span:first-child{font-size:13.5px;font-weight:600}
+  .statrow .val{font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+  .statrow .val.ok{color:var(--gold)}
+
+  /* ---- amis ---- */
+  .input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);
+    color:var(--ink);font-family:inherit;font-size:16px;margin:8px 0}
+  select.input{appearance:none}
+  .btn{display:inline-block;background:var(--emerald);color:var(--on-emerald);border:none;border-radius:12px;
+    padding:12px 18px;font-size:14.5px;font-weight:650;cursor:pointer;font-family:inherit}
+  .btn.ghost{background:var(--surface2);color:var(--emerald)}
+  .btn.wide{width:100%;text-align:center}
+  .btn:active{transform:scale(.98)}
+  .codebox{font-size:24px;font-weight:800;letter-spacing:.3em;color:var(--gold);text-align:center;
+    background:var(--gold-soft);border-radius:10px;padding:12px;margin:10px 0 4px;font-variant-numeric:tabular-nums;direction:ltr}
+  .member{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .member:last-child{border-bottom:none}
+  .member .nm{font-weight:650}
+  .member .me{color:var(--emerald);font-size:11.5px;font-weight:700}
+  .member .st{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+  .contrib{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:4px 0;font-variant-numeric:tabular-nums}
+  .contrib b{color:var(--ink);font-weight:600}
+  .err{color:var(--danger);font-size:13px;margin-top:6px}
+  .presets{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+  .badges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+  .bdg{text-align:center;padding:10px 6px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+  .bdg .e{font-size:26px;line-height:1.2}
+  .bdg .n{font-size:11.5px;font-weight:650;margin-top:4px}
+  .bdg .c{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .bdg.off{opacity:.38;filter:grayscale(1)}
+  .dua{padding:10px 0;border-bottom:1px solid var(--line)}
+  .dua:last-child{border-bottom:none}
+  .dua .tx{font-size:14px;font-weight:600;line-height:1.5}
+  .dua .by{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .dua .actions{display:flex;gap:8px;align-items:center;margin-top:8px}
+  .duabtn{background:var(--gold-soft);color:var(--gold);border:none;border-radius:16px;padding:8px 14px;
+    font-size:12.5px;font-weight:650;cursor:pointer;font-family:inherit}
+  .duabtn.done{opacity:.65}
+  .delbtn{background:none;border:none;color:var(--danger);font-size:12px;cursor:pointer;font-family:inherit;margin-inline-start:auto}
+  .teamline{display:flex;align-items:center;gap:12px;margin-top:6px}
+  .teamline .big{font-size:26px;font-weight:700;color:var(--gold);white-space:nowrap}
+
+  /* ---- réglages ---- */
+  .setrow{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .setrow:last-child{border-bottom:none}
+  .setrow .k{font-size:14px;font-weight:600}
+  .setrow .kk{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .seg{display:flex;gap:6px}
+  .seg button{flex:1;background:var(--surface2);border:1px solid var(--line);color:var(--muted);border-radius:10px;
+    padding:9px 6px;font-size:12.5px;font-weight:650;cursor:pointer;font-family:inherit}
+  .seg button.on{background:var(--emerald);border-color:var(--emerald);color:var(--on-emerald)}
+  .goalrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .goalrow:last-of-type{border-bottom:none}
+  .goalrow .nm{font-size:13.5px;font-weight:600;flex:1;min-width:0}
+  .goalrow input{width:88px;flex:none;padding:9px;border-radius:10px;border:1px solid var(--line);
+    background:var(--surface2);color:var(--ink);font-family:inherit;font-size:16px;text-align:center;
+    font-variant-numeric:tabular-nums}
+  .iconbtn{border:1px solid var(--line);background:var(--surface);color:var(--emerald);
+    border-radius:16px;padding:5px 10px;font-size:14px;cursor:pointer;font-family:inherit;line-height:1.4}
+
+  /* ---- horaires de prière ---- */
+  .prayers{display:flex;gap:4px;margin-top:12px}
+  .pr{flex:1;text-align:center;padding:8px 2px;border-radius:10px;background:var(--surface2);border:1px solid transparent}
+  .pr.now{background:var(--emerald);border-color:var(--emerald)}
+  .pr.now .pn,.pr.now .pt{color:var(--on-emerald)}
+  .pr .pn{font-size:10.5px;color:var(--muted);font-weight:650}
+  .pr .pt{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+  .nextpr{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .nextpr .nm{font-size:15px;font-weight:700}
+  .nextpr .cd{font-size:13px;color:var(--gold);font-weight:650;font-variant-numeric:tabular-nums}
+
+  nav{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;
+    background:color-mix(in srgb, var(--surface) 88%, transparent);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+  nav .inner{display:flex;width:100%;max-width:480px}
+  nav button{flex:1;background:none;border:none;padding:10px 0 12px;cursor:pointer;color:var(--muted);
+    font-family:inherit;font-size:10.5px;font-weight:650;display:flex;flex-direction:column;align-items:center;gap:3px}
+  html[dir="rtl"] nav button{font-size:12px}
+  nav button svg{width:22px;height:22px}
+  nav button.on{color:var(--emerald)}
+
+  #counter{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;
+    background:radial-gradient(120% 90% at 50% 0%, #10261E 0%, #0A1712 55%, #06100C 100%);
+    color:#EAF2EC;user-select:none;-webkit-user-select:none;touch-action:none;overflow:hidden}
+  #counter.open{display:flex}
+  #counter .head{display:flex;align-items:center;justify-content:space-between;
+    padding:calc(16px + env(safe-area-inset-top, 0px)) 16px 0;z-index:5}
+  #counter .head button{background:rgba(234,242,236,.09);border:none;color:#EAF2EC;border-radius:50%;
+    width:40px;height:40px;font-size:17px;cursor:pointer;font-family:inherit}
+  #counter .phase{display:flex;gap:7px;justify-content:center;padding-top:10px}
+  #counter .phase i{width:7px;height:7px;border-radius:50%;background:rgba(234,242,236,.22)}
+  #counter .phase i.on{background:#D9B45E}
+  #counter .stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:0 24px;z-index:2}
+  #c-ar{font-size:clamp(30px,9vw,44px);color:#F3EBD3;margin:0 0 8px;max-width:100%}
+  #c-lat{font-size:15px;color:rgba(234,242,236,.75);margin:0 0 30px;font-weight:500}
+  .bigring{position:relative;width:min(64vw,250px);aspect-ratio:1}
+  .bigring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  #c-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-variant-numeric:tabular-nums}
+  #c-count{font-size:64px;font-weight:300;line-height:1;letter-spacing:-.02em}
+  #c-target{font-size:14px;color:rgba(234,242,236,.55);margin-top:4px;direction:ltr}
+  #c-live{font-size:12.5px;color:#D9B45E;margin-top:10px;min-height:16px;max-width:80vw}
+  #counter .hint{font-size:12.5px;color:rgba(234,242,236,.45);padding:0 0 14px;text-align:center;z-index:2}
+  #counter .foot{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+    padding:0 12px calc(22px + env(safe-area-inset-bottom));z-index:5}
+  #counter .foot button{background:rgba(234,242,236,.09);border:none;color:#EAF2EC;border-radius:22px;
+    padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit}
+  .ripple{position:absolute;border-radius:50%;background:rgba(217,180,94,.28);transform:scale(0);
+    animation:rip .55s ease-out forwards;pointer-events:none;z-index:1}
+  @keyframes rip{to{transform:scale(1);opacity:0}}
+  .pulse{animation:pulse .16s ease}
+  @keyframes pulse{50%{transform:scale(1.06)}}
+  #milestone{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    pointer-events:none;opacity:0;z-index:4}
+  #milestone span{font-size:20px;font-weight:700;color:#D9B45E;background:rgba(6,16,12,.75);
+    border:1px solid rgba(217,180,94,.4);padding:10px 26px;border-radius:26px}
+  #milestone.show{animation:mile 1.4s ease forwards}
+  @keyframes mile{0%{opacity:0;transform:translateY(8px)}15%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
+
+  #celebrate{position:absolute;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:32px 26px;
+    background:radial-gradient(100% 80% at 50% 30%, rgba(217,180,94,.16) 0%, rgba(217,180,94,0) 60%), rgba(6,16,12,.98)}
+  #celebrate.open{display:flex}
+  #celebrate .star{font-size:44px;margin-bottom:10px}
+  #celebrate h2{font-size:24px;margin:0 0 6px;color:#F3EBD3;font-weight:700}
+  #celebrate .reward{font-size:15.5px;line-height:1.8;color:rgba(234,242,236,.85);max-width:34ch;margin:10px 0 4px}
+  #celebrate .src{font-size:12px;color:rgba(234,242,236,.5);margin-bottom:30px}
+  #celebrate .actions{display:flex;gap:12px}
+  #celebrate button{border:none;border-radius:24px;padding:13px 26px;font-size:15px;font-weight:650;
+    cursor:pointer;font-family:inherit}
+  #celebrate .again{background:rgba(234,242,236,.1);color:#EAF2EC}
+  #celebrate .ok{background:#D9B45E;color:#241B05}
+
+  .srcline{font-size:11.5px;color:var(--muted);margin-top:4px}
+  .footer-note{text-align:center;font-size:11.5px;color:var(--muted);margin:26px 0 4px;line-height:1.8}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="view"></div>
+</div>
+
+<nav>
+  <div class="inner">
+    <button id="nav-home" class="on">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span id="lbl-home">Accueil</span>
+    </button>
+    <button id="nav-adhkar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="4" r="1.6"/><circle cx="6" cy="7" r="1.6"/><circle cx="18" cy="7" r="1.6"/><circle cx="4.5" cy="13" r="1.6"/><circle cx="19.5" cy="13" r="1.6"/><circle cx="8" cy="18" r="1.6"/><circle cx="16" cy="18" r="1.6"/><path d="M12 20.5v1"/></svg>
+      <span id="lbl-adhkar">Adhkar</span>
+    </button>
+    <button id="nav-free">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="11" r="7.5" stroke-dasharray="2.4 3.1"/><path d="M12 18.5v2"/><path d="M10.8 22h2.4"/></svg>
+      <span id="lbl-free">Libre</span>
+    </button>
+    <button id="nav-amis">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c.6-3.4 2.9-5 5.5-5s4.9 1.6 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M16 15.2c2.3.2 4 1.6 4.5 4.3"/></svg>
+      <span id="lbl-amis">Amis</span>
+    </button>
+    <button id="nav-stats">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V12"/><path d="M10 20V6"/><path d="M16 20v-9"/><path d="M22 20H2"/></svg>
+      <span id="lbl-stats">Stats</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ======== COUNTER OVERLAY ======== -->
+<div id="counter">
+  <div class="head">
+    <button id="c-close" aria-label="Fermer">✕</button>
+    <button id="c-undo" aria-label="Annuler un tap">−1</button>
+  </div>
+  <div class="phase" id="c-phase"></div>
+  <div class="stage">
+    <p class="ar" id="c-ar"></p>
+    <p id="c-lat"></p>
+    <div class="bigring">
+      <svg viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(234,242,236,.12)" stroke-width="7"/>
+        <circle id="c-ring" cx="100" cy="100" r="90" fill="none" stroke="#D9B45E" stroke-width="7"
+          stroke-linecap="round" stroke-dasharray="565.5" stroke-dashoffset="565.5"/>
+      </svg>
+      <div id="c-num"><span id="c-count">0</span><span id="c-target"></span></div>
+    </div>
+    <div id="c-live"></div>
+  </div>
+  <p class="hint" id="c-hint"></p>
+  <div class="foot">
+    <button id="c-formula" style="display:none"></button>
+    <button id="c-add"></button>
+    <button id="c-sub"></button>
+    <button id="c-reset"></button>
+  </div>
+  <div id="milestone"><span></span></div>
+
+  <div id="celebrate">
+    <div class="star">✦</div>
+    <h2 id="cel-title"></h2>
+    <p class="ar" id="cel-ar" style="font-size:26px;color:#D9B45E"></p>
+    <p class="reward" id="cel-reward"></p>
+    <p class="src" id="cel-src"></p>
+    <div class="actions">
+      <button class="again" id="cel-again"></button>
+      <button class="ok" id="cel-ok"></button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+"use strict";
+
+/* =====================================================================
+   CONFIG FIREBASE — pour activer le mode amis :
+   suis SETUP_FIREBASE.md (≈ 5 min), colle ta config ci-dessous, redéploie.
+   Tant que apiKey est vide, l'app fonctionne en mode solo.
+===================================================================== */
+/* Clé publique VAPID (voir SETUP_NOTIFICATIONS.md). La clé PRIVÉE, elle,
+   ne doit jamais apparaître ici : elle vit dans les variables Netlify. */
+const VAPID_PUBLIC = "BCdXOWwNSE9U9riyanM5wHEUL5q0Si5LxEovq0DTh_C-UVk9hhTAvl5K6yLIVQ2ZLjVYZDd6zUnrKC-ybWi6YTQ";
+const NOTIFY_URL = "/.netlify/functions/notify";
+
+const FB_CONFIG = {
+  apiKey: "AIzaSyBKXEPIuNPRzDVXjyIcVHDl3OK7J1bkols",
+  authDomain: "adhkar-challenge.firebaseapp.com",
+  projectId: "adhkar-challenge",
+  storageBucket: "adhkar-challenge.firebasestorage.app",
+  messagingSenderId: "120892177439",
+  appId: "1:120892177439:web:0e70883b2819e95359e92a"
+};
+
+/* ================= I18N ================= */
+const STR = {
+  fr: {
+    salam:"As-salamu ‘alaykum",
+    streakCap:(n)=> "jour"+(n>1?"s":"")+" de suite",
+    todayCap:"dhikr aujourd'hui",
+    goalsCap:"objectifs",
+    dayOk:"Journée validée — qu'Allah accepte ✦",
+    momentM:"C'est le moment — adhkar du matin",
+    momentS:"C'est le moment — adhkar du soir",
+    momentN:"C'est le moment — adhkar du coucher",
+    morning:"Adhkar du matin ☀️",
+    evening:"Adhkar du soir 🌙",
+    night:"Adhkar du coucher 🛌",
+    chipN:"🛌 Coucher",
+    doneToday:"Accomplis pour aujourd'hui ✓",
+    checklistOf:(n)=>"Checklist de "+n+" invocations",
+    goalsLabel:"Objectifs du jour",
+    goal:(t)=>"Objectif "+t,
+    accomplished:" — accompli ✓",
+    betaNote:"Adhkar Challenge — beta 1.2<br>Tes compteurs restent sur ton téléphone.",
+    adhkarTitle:"Adhkar",
+    adhkarSub:"Touche un dhikr pour ouvrir le compteur. Chaque formule est citée avec sa source.",
+    chipM:"☀️ Matin", chipS:"🌙 Soir",
+    doneOf:(a,b)=>a+"/"+b+" accomplis",
+    counters:"Compteurs",
+    source:"Source : ",
+    statsTitle:"Statistiques",
+    streakCur:"streak actuel", todayLbl:"aujourd'hui",
+    lifeLbl:"dhikr au total", bestLbl:"record en un jour",
+    last7:"7 derniers jours",
+    regularity:"La régularité vaut plus que le volume.",
+    hadithFooter:"« L'action la plus aimée d'Allah est la plus régulière,<br>même si elle est petite. » — Bukhari &amp; Muslim",
+    hint:"Touche l'écran n'importe où pour compter",
+    reset:"Remettre à zéro",
+    resetConfirm:"Remettre ce compteur à zéro pour aujourd'hui ?",
+    goalReached:"Objectif atteint",
+    again:"Refaire", hamd:"Alhamdulillah",
+    latLine:(lat,n)=>lat+" — "+n+" fois",
+    totalLbl:"total",
+    nextPhase:(done,next)=>done+" — "+next+" maintenant",
+    navHome:"Accueil", navAdhkar:"Adhkar", navStats:"Stats", navFree:"Libre", navAmis:"Amis",
+    freeTitle:"Dhikr libre",
+    freeSub:"Compteur libre — sans objectif, compte ce que tu veux.",
+    readHint:"Touche le texte d'une invocation pour la lire en entier.",
+    laps:(n)=> n+" tour"+(n>1?"s":"")+" de 33",
+    formula:"Formule ⟳",
+    freeLbl:"Dhikr libre",
+    dayLetters:["dim","lun","mar","mer","jeu","ven","sam"],
+    locale:"fr-FR", other:"عربي",
+    /* amis */
+    amisTitle:"Amis",
+    setupTitle:"Mode amis — à activer",
+    setupBody:"Le temps réel entre amis utilise Firebase (gratuit). Suis le guide SETUP_FIREBASE.md du dossier AdhkarChallenge (≈ 5 min), colle ta config en haut de index.html, puis redéploie sur Netlify.",
+    connecting:"Connexion en cours…",
+    fbError:"Erreur de connexion : ",
+    askName:"Ton prénom",
+    askNameSub:"Il sera visible par les membres de ton groupe.",
+    namePh:"Prénom",
+    letsgo:"C'est parti",
+    createGroupT:"Créer un groupe",
+    createGroupSub:"Tu recevras un code à 6 lettres à partager sur WhatsApp.",
+    groupNamePh:"Nom du groupe (ex. Les frérots)",
+    createBtn:"Créer le groupe",
+    joinT:"Rejoindre un groupe",
+    joinSub:"Un ami t'a envoyé un code ? Entre-le ici.",
+    codePh:"CODE",
+    joinBtn:"Rejoindre",
+    notFound:"Groupe introuvable — vérifie le code.",
+    inviteCode:"Code d'invitation — partage-le à tes amis :",
+    membersT:"Le groupe aujourd'hui",
+    memberDhikr:(n)=> n+" dhikr",
+    chT:"Défis collectifs",
+    noCh:"Aucun défi en cours — lance le premier !",
+    newCh:"Lancer un défi",
+    presetLbl:"Défis prêts à l'emploi :",
+    customT:"Ou compose le tien :",
+    targetPh:"Objectif total (ex. 10000)",
+    launch:"Lancer 🚀",
+    join2:"Participer 📿",
+    together:"ensemble",
+    reachedCh:"Objectif atteint, qu'Allah accepte 🎉",
+    contrib:"Contributions",
+    me:"toi",
+    liveLine:(tot,tgt)=> tot+" / "+tgt+" ensemble",
+    myGroups:"Mes groupes",
+    addGroup:"＋ Groupe",
+    leave:"Quitter ce groupe",
+    leaveConfirm:(n)=>"Quitter « "+n+" » ? Tes contributions passées restent dans les défis du groupe.",
+    cancel:"← Retour à mes groupes",
+    whatsapp:"Inviter sur WhatsApp 💬",
+    waText:(g,c,u)=>"Salam ! Rejoins notre groupe d'adhkar « "+g+" » \u{1F4FF}\n1) Installe l'app : "+u+"\n2) Onglet Amis → ton prénom → Rejoindre un groupe\n3) Code : "+c,
+    duaT:"Mur de dou'as",
+    duaPh:"Demande une dou'a au groupe…",
+    duaPost:"Publier 🤲",
+    duaBtn:"J'ai fait dou'a",
+    duaDone:"Dou'a faite ✓",
+    del:"Supprimer",
+    delConfirm:"Supprimer cette demande ?",
+    teamT:"Streak d'équipe",
+    teamAllOk:"Tout le monde a validé sa journée ✓",
+    teamMissing:(s)=>"Il ne manque plus que : "+s+" !",
+    teamExplain:"La chaîne tient tant que chaque membre valide sa journée (au moins un objectif accompli).",
+    modeLbl:"Type de défi :",
+    modeTeam:"🤝 Ensemble",
+    modeRace:"⚔️ Course",
+    raceHint:"Course : chacun compte pour soi, premier arrivé à l'objectif !",
+    raceWin:(n)=>"🏆 "+n+" a terminé en premier !",
+    delCh:"Supprimer ce défi",
+    delChConfirm:"Supprimer ce défi pour tout le groupe ?",
+    addBtn:"＋ Ajouter",
+    addPrompt:"Combien de dhikr as-tu faits en dehors de l'app ?",
+    subBtn:"− Retirer",
+    subPrompt:"Combien de dhikr veux-tu retirer ?",
+    badgesT:"Badges",
+    /* réglages */
+    setT:"Réglages",
+    back:"← Retour",
+    nameLbl:"Ton prénom",
+    nameSub:"Visible par les membres de tes groupes.",
+    saveBtn:"Enregistrer",
+    saved:"Enregistré ✓",
+    themeLbl:"Thème",
+    themeSub:"Auto suit le réglage de ton téléphone.",
+    thAuto:"Auto", thLight:"Clair", thDark:"Sombre",
+    vibeLbl:"Vibrations",
+    vibeSub:"Retour haptique à chaque dhikr et aux paliers.",
+    on:"Oui", off:"Non",
+    goalsCustom:"Objectifs personnalisés",
+    goalsCustomSub:"Adapte chaque objectif à ton rythme. Laisse vide pour la valeur par défaut.",
+    resetGoals:"Rétablir les objectifs par défaut",
+    fixedGoal:"33 · 33 · 34 (fixe)",
+    /* prière */
+    prayerT:"Horaires de prière",
+    prayerOff:"Active ta position pour afficher les horaires et basculer automatiquement entre adhkar du matin et du soir.",
+    prayerBtn:"Activer les horaires 📍",
+    prayerWait:"Localisation en cours…",
+    prayerDenied:"Localisation refusée. Autorise-la dans les réglages de ton navigateur, puis réessaie.",
+    prayerErr:"Horaires indisponibles (pas de réseau ?).",
+    prayerOffBtn:"Désactiver les horaires",
+    nextIs:"Prochaine prière",
+    inTime:(h,m)=> "dans "+(h?h+" h ":"")+m+" min",
+    methodLbl:"Méthode de calcul",
+    methods:[{v:12,l:"UOIF (France)"},{v:3,l:"Ligue Islamique Mondiale"},{v:2,l:"ISNA (Am. du Nord)"},{v:4,l:"Umm al-Qura (Arabie)"},{v:5,l:"Égypte"}],
+    prNames:{Fajr:"Fajr",Sunrise:"Shourouq",Dhuhr:"Dhuhr",Asr:"Asr",Maghrib:"Maghrib",Isha:"Isha"},
+    /* notifications */
+    notifT:"Notifications",
+    notifSub:"Être prévenu quand un ami lance un défi ou demande une dou'a.",
+    notifOn:"Activer les notifications 🔔",
+    notifOff:"Désactiver les notifications",
+    notifActive:"Activées ✓",
+    notifDenied:"Notifications refusées. Autorise-les dans les réglages de ton navigateur, puis réessaie.",
+    notifUnsupported:"Ton navigateur ne gère pas les notifications.",
+    notifIos:"Sur iPhone : l'app doit être installée sur l'écran d'accueil (iOS 16.4 ou plus).",
+    notifSetupNeeded:"Clé VAPID absente — voir SETUP_NOTIFICATIONS.md.",
+    notifNoGroup:"Rejoins d'abord un groupe pour recevoir des notifications.",
+    presets:[
+      {label:"Vendredi : 10 000 salawat 🕌"},
+      {label:"5 000 istighfar ensemble"},
+      {label:"3 300 tasbih ensemble"},
+    ],
+  },
+  ar: {
+    salam:"السلام عليكم ورحمة الله",
+    streakCap:()=>"أيام متتالية",
+    todayCap:"ذِكرًا اليوم",
+    goalsCap:"أهداف",
+    dayOk:"يومك مُثبَت — تقبّل الله ✦",
+    momentM:"حان الوقت — أذكار الصباح",
+    momentS:"حان الوقت — أذكار المساء",
+    momentN:"حان الوقت — أذكار النوم",
+    morning:"أذكار الصباح ☀️",
+    evening:"أذكار المساء 🌙",
+    night:"أذكار النوم 🛌",
+    chipN:"🛌 النوم",
+    doneToday:"أُنجِزت اليوم ✓",
+    checklistOf:(n)=>"قائمة من "+n+" أذكار",
+    goalsLabel:"أهداف اليوم",
+    goal:(t)=>"الهدف "+t,
+    accomplished:" — أُنجز ✓",
+    betaNote:"تحدّي الأذكار — نسخة تجريبية 1.2<br>عدّاداتك تبقى على هاتفك.",
+    adhkarTitle:"الأذكار",
+    adhkarSub:"المس ذكرًا لفتح العدّاد. كل صيغة مذكورة بمصدرها.",
+    chipM:"☀️ الصباح", chipS:"🌙 المساء",
+    doneOf:(a,b)=>"أُنجز "+a+"/"+b,
+    counters:"العدّادات",
+    source:"المصدر: ",
+    statsTitle:"الإحصائيات",
+    streakCur:"السلسلة الحالية", todayLbl:"اليوم",
+    lifeLbl:"مجموع الأذكار", bestLbl:"أفضل يوم",
+    last7:"آخر 7 أيام",
+    regularity:"الاستمرارية خير من الكثرة.",
+    hadithFooter:"«أَحَبُّ الأَعْمَالِ إِلَى اللهِ أَدْوَمُهَا وَإِنْ قَلَّ»<br>— متفق عليه",
+    hint:"المس الشاشة في أي مكان للعدّ",
+    reset:"إعادة التصفير",
+    resetConfirm:"إعادة تصفير هذا العدّاد لليوم؟",
+    goalReached:"بلغتَ الهدف",
+    again:"إعادة", hamd:"الحمد لله",
+    latLine:(lat,n)=>n+" مرة",
+    totalLbl:"المجموع",
+    nextPhase:(done,next)=>done+" — "+next+" الآن",
+    navHome:"الرئيسية", navAdhkar:"الأذكار", navStats:"الإحصاء", navFree:"حر", navAmis:"الأصدقاء",
+    freeTitle:"ذِكْرٌ حُرّ",
+    freeSub:"عدّاد حر — سبّح ما شئت بلا هدف.",
+    readHint:"المس نص الذكر لقراءته كاملًا.",
+    laps:(n)=> n+" دورة (33)",
+    formula:"الصيغة ⟳",
+    freeLbl:"ذكر حر",
+    dayLetters:["أحد","اثن","ثلا","أرب","خمي","جمع","سبت"],
+    locale:"ar", other:"FR",
+    /* amis */
+    amisTitle:"الأصدقاء",
+    setupTitle:"وضع الأصدقاء — للتفعيل",
+    setupBody:"الوقت الحقيقي بين الأصدقاء يستعمل Firebase (مجاني). اتبع دليل SETUP_FIREBASE.md ثم الصق الإعدادات في أعلى index.html وأعد النشر.",
+    connecting:"جارٍ الاتصال…",
+    fbError:"خطأ في الاتصال: ",
+    askName:"اسمك",
+    askNameSub:"سيظهر لأعضاء مجموعتك.",
+    namePh:"الاسم",
+    letsgo:"هيا بنا",
+    createGroupT:"إنشاء مجموعة",
+    createGroupSub:"ستحصل على رمز من 6 أحرف تشاركه على واتساب.",
+    groupNamePh:"اسم المجموعة",
+    createBtn:"أنشئ المجموعة",
+    joinT:"الانضمام إلى مجموعة",
+    joinSub:"أرسل لك صديق رمزًا؟ أدخله هنا.",
+    codePh:"الرمز",
+    joinBtn:"انضم",
+    notFound:"المجموعة غير موجودة — تحقق من الرمز.",
+    inviteCode:"رمز الدعوة — شاركه مع أصدقائك:",
+    membersT:"المجموعة اليوم",
+    memberDhikr:(n)=> n+" ذكرًا",
+    chT:"تحديات جماعية",
+    noCh:"لا تحدي حاليًا — أطلق الأول!",
+    newCh:"إطلاق تحدٍّ",
+    presetLbl:"تحديات جاهزة:",
+    customT:"أو أنشئ تحدّيك:",
+    targetPh:"الهدف الكلي (مثال 10000)",
+    launch:"أطلق 🚀",
+    join2:"شارك 📿",
+    together:"معًا",
+    reachedCh:"بلغنا الهدف، تقبّل الله 🎉",
+    contrib:"المساهمات",
+    me:"أنت",
+    liveLine:(tot,tgt)=> tot+" / "+tgt+" معًا",
+    myGroups:"مجموعاتي",
+    addGroup:"＋ مجموعة",
+    leave:"مغادرة المجموعة",
+    leaveConfirm:(n)=>"مغادرة «"+n+"»؟ تبقى مساهماتك السابقة في تحديات المجموعة.",
+    cancel:"← العودة إلى مجموعاتي",
+    whatsapp:"دعوة عبر واتساب 💬",
+    waText:(g,c,u)=>"السلام عليكم! انضم إلى مجموعة الأذكار «"+g+"» \u{1F4FF}\n1) ثبّت التطبيق: "+u+"\n2) تبويب الأصدقاء ← اسمك ← انضم إلى مجموعة\n3) الرمز: "+c,
+    duaT:"حائط الدعاء",
+    duaPh:"اطلب دعاءً من المجموعة…",
+    duaPost:"انشر 🤲",
+    duaBtn:"دعوتُ لك",
+    duaDone:"تم الدعاء ✓",
+    del:"حذف",
+    delConfirm:"حذف هذا الطلب؟",
+    teamT:"سلسلة الفريق",
+    teamAllOk:"الجميع أثبتوا يومهم ✓",
+    teamMissing:(s)=>"لم يبقَ إلا: "+s+"!",
+    teamExplain:"تستمر السلسلة ما دام كل عضو يثبت يومه (هدف واحد على الأقل).",
+    modeLbl:"نوع التحدي:",
+    modeTeam:"🤝 معًا",
+    modeRace:"⚔️ سباق",
+    raceHint:"سباق: كلٌّ يعدّ لنفسه، والأول إلى الهدف يفوز!",
+    raceWin:(n)=>"🏆 "+n+" أنهى أولًا!",
+    delCh:"حذف هذا التحدي",
+    delChConfirm:"حذف هذا التحدي للمجموعة كلها؟",
+    addBtn:"＋ إضافة",
+    addPrompt:"كم ذكرًا قمت به خارج التطبيق؟",
+    subBtn:"− إنقاص",
+    subPrompt:"كم ذكرًا تريد أن تنقص؟",
+    badgesT:"الأوسمة",
+    /* réglages */
+    setT:"الإعدادات",
+    back:"← رجوع",
+    nameLbl:"اسمك",
+    nameSub:"يظهر لأعضاء مجموعاتك.",
+    saveBtn:"حفظ",
+    saved:"تم الحفظ ✓",
+    themeLbl:"المظهر",
+    themeSub:"«تلقائي» يتبع إعدادات هاتفك.",
+    thAuto:"تلقائي", thLight:"فاتح", thDark:"داكن",
+    vibeLbl:"الاهتزاز",
+    vibeSub:"اهتزاز خفيف عند كل ذكر وعند المراحل.",
+    on:"نعم", off:"لا",
+    goalsCustom:"أهداف مخصّصة",
+    goalsCustomSub:"عدّل كل هدف حسب وتيرتك. اتركه فارغًا للقيمة الافتراضية.",
+    resetGoals:"استعادة الأهداف الافتراضية",
+    fixedGoal:"33 · 33 · 34 (ثابت)",
+    /* prière */
+    prayerT:"مواقيت الصلاة",
+    prayerOff:"فعّل موقعك لعرض المواقيت والتبديل تلقائيًا بين أذكار الصباح والمساء.",
+    prayerBtn:"تفعيل المواقيت 📍",
+    prayerWait:"جارٍ تحديد الموقع…",
+    prayerDenied:"رُفض تحديد الموقع. اسمح به في إعدادات المتصفح ثم أعد المحاولة.",
+    prayerErr:"المواقيت غير متاحة (لا يوجد اتصال؟).",
+    prayerOffBtn:"تعطيل المواقيت",
+    nextIs:"الصلاة القادمة",
+    inTime:(h,m)=> "بعد "+(h?h+" س ":"")+m+" د",
+    methodLbl:"طريقة الحساب",
+    methods:[{v:12,l:"اتحاد المنظمات الإسلامية في فرنسا"},{v:3,l:"رابطة العالم الإسلامي"},{v:2,l:"ISNA (أمريكا الشمالية)"},{v:4,l:"أم القرى (السعودية)"},{v:5,l:"مصر"}],
+    prNames:{Fajr:"الفجر",Sunrise:"الشروق",Dhuhr:"الظهر",Asr:"العصر",Maghrib:"المغرب",Isha:"العشاء"},
+    /* notifications */
+    notifT:"الإشعارات",
+    notifSub:"تنبيهك عندما يطلق صديق تحديًا أو يطلب دعاءً.",
+    notifOn:"تفعيل الإشعارات 🔔",
+    notifOff:"تعطيل الإشعارات",
+    notifActive:"مفعّلة ✓",
+    notifDenied:"رُفضت الإشعارات. اسمح بها في إعدادات المتصفح ثم أعد المحاولة.",
+    notifUnsupported:"متصفحك لا يدعم الإشعارات.",
+    notifIos:"على الآيفون: يجب تثبيت التطبيق على الشاشة الرئيسية (iOS 16.4 فأعلى).",
+    notifSetupNeeded:"مفتاح VAPID مفقود — راجع SETUP_NOTIFICATIONS.md.",
+    notifNoGroup:"انضم إلى مجموعة أولًا لتلقي الإشعارات.",
+    presets:[
+      {label:"الجمعة: 10000 صلاة على النبي 🕌"},
+      {label:"5000 استغفار معًا"},
+      {label:"3300 تسبيحة معًا"},
+    ],
+  },
+};
+
+/* ================= DATA ================= */
+const ADHKAR = [
+  {
+    id:"tasbih",
+    name:{fr:"Tasbih après la prière", ar:"التسبيح بعد الصلاة"},
+    target:100,
+    chain:[
+      {ar:"سُبْحَانَ الله", lat:"SubhanAllah", n:33},
+      {ar:"الْحَمْدُ لِلَّه", lat:"Alhamdulillah", n:33},
+      {ar:"اللَّهُ أَكْبَر", lat:"Allahu Akbar", n:34},
+    ],
+    ar:"سُبْحَانَ الله · الْحَمْدُ لِلَّه · اللَّهُ أَكْبَر",
+    lat:"33 × SubhanAllah, 33 × Alhamdulillah, 34 × Allahu Akbar",
+    desc:{fr:"Le tasbih recommandé après chaque prière obligatoire.", ar:"التسبيح المستحب بعد كل صلاة مفروضة."},
+    src:{fr:"Muslim n°596", ar:"صحيح مسلم 596"},
+    reward:{fr:"« Ses fautes sont pardonnées, fussent-elles comme l'écume de la mer. »",
+            ar:"«غُفِرَتْ خَطَايَاهُ وَإِنْ كَانَتْ مِثْلَ زَبَدِ الْبَحْرِ»"},
+    celAr:"تَقَبَّلَ الله"
+  },
+  {
+    id:"sbh100",
+    name:{fr:"SubhanAllah wa bihamdihi", ar:"سبحان الله وبحمده"},
+    target:100,
+    ar:"سُبْحَانَ اللهِ وَبِحَمْدِهِ",
+    lat:"SubhanAllah wa bihamdihi",
+    desc:{fr:"« Gloire et louange à Allah » — 100 fois dans la journée.", ar:"مئة مرة في اليوم."},
+    src:{fr:"Bukhari n°6405 · Muslim n°2691", ar:"البخاري 6405 · مسلم 2691"},
+    reward:{fr:"« Celui qui la dit 100 fois par jour, ses péchés sont effacés, fussent-ils comme l'écume de la mer. »",
+            ar:"«مَنْ قَالَهَا فِي يَوْمٍ مِائَةَ مَرَّةٍ حُطَّتْ خَطَايَاهُ وَإِنْ كَانَتْ مِثْلَ زَبَدِ الْبَحْرِ»"},
+    celAr:"سُبْحَانَ اللهِ وَبِحَمْدِهِ"
+  },
+  {
+    id:"istighfar",
+    name:{fr:"Istighfar", ar:"الاستغفار"},
+    target:100,
+    ar:"أَسْتَغْفِرُ اللهَ",
+    lat:"Astaghfirullah",
+    desc:{fr:"« Je demande pardon à Allah » — 100 fois dans la journée.", ar:"مئة مرة في اليوم."},
+    src:{fr:"Muslim n°2702", ar:"صحيح مسلم 2702"},
+    reward:{fr:"Le Prophète ﷺ demandait pardon à Allah cent fois par jour.",
+            ar:"كان النبي ﷺ يستغفر الله في اليوم مئة مرة."},
+    celAr:"أَسْتَغْفِرُ اللهَ وَأَتُوبُ إِلَيْهِ"
+  },
+  {
+    id:"salawat",
+    name:{fr:"Salawat sur le Prophète ﷺ", ar:"الصلاة على النبي ﷺ"},
+    target:10,
+    ar:"اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّد",
+    lat:"Allahumma salli wa sallim 'ala nabiyyina Muhammad",
+    desc:{fr:"Prière sur le Prophète ﷺ — augmente librement, surtout le vendredi.", ar:"أكثِر منها، خاصة يوم الجمعة."},
+    src:{fr:"Muslim n°408", ar:"صحيح مسلم 408"},
+    reward:{fr:"« Celui qui prie une fois sur moi, Allah prie dix fois sur lui. »",
+            ar:"«مَنْ صَلَّى عَلَيَّ صَلَاةً صَلَّى اللهُ عَلَيْهِ بِهَا عَشْرًا»"},
+    celAr:"صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ"
+  },
+  {
+    id:"tahlil",
+    name:{fr:"Tahlil", ar:"التهليل"},
+    target:10,
+    ar:"لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِير",
+    lat:"La ilaha illallahu wahdahu la sharika lah…",
+    desc:{fr:"L'attestation d'unicité — 10 fois.", ar:"عشر مرات."},
+    src:{fr:"Bukhari n°3293 · Muslim n°2691", ar:"البخاري 3293 · مسلم 2691"},
+    reward:{fr:"« C'est comme affranchir quatre personnes parmi les descendants d'Ismaël. »",
+            ar:"«كَانَتْ لَهُ كَعَدْلِ أَرْبَعِ رِقَابٍ مِنْ وَلَدِ إِسْمَاعِيلَ»"},
+    celAr:"لَا إِلَهَ إِلَّا الله"
+  },
+  {
+    id:"hawla",
+    name:{fr:"La hawla wa la quwwata illa billah", ar:"لا حول ولا قوة إلا بالله"},
+    target:10,
+    ar:"لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ",
+    lat:"La hawla wa la quwwata illa billah",
+    desc:{fr:"« Il n'y a de force ni de puissance que par Allah. »", ar:"كنز من كنوز الجنة."},
+    src:{fr:"Bukhari n°4205 · Muslim n°2704", ar:"البخاري 4205 · مسلم 2704"},
+    reward:{fr:"« C'est un trésor parmi les trésors du Paradis. »",
+            ar:"«كَنْزٌ مِنْ كُنُوزِ الْجَنَّةِ»"},
+    celAr:"كَنْزٌ مِنْ كُنُوزِ الْجَنَّة"
+  },
+  {
+    id:"khafifatan",
+    name:{fr:"Les deux paroles légères", ar:"الكلمتان الخفيفتان"},
+    target:10,
+    ar:"سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ",
+    lat:"SubhanAllahi wa bihamdihi, SubhanAllahil-'Adhim",
+    desc:{fr:"Deux paroles légères sur la langue, lourdes dans la balance.", ar:"خفيفتان على اللسان، ثقيلتان في الميزان."},
+    src:{fr:"Bukhari n°6682 · Muslim n°2694", ar:"البخاري 6682 · مسلم 2694"},
+    reward:{fr:"« Légères sur la langue, lourdes dans la balance, aimées du Tout-Miséricordieux. »",
+            ar:"«كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ»"},
+    celAr:"حَبِيبَتَانِ إِلَى الرَّحْمَن"
+  },
+];
+
+const FREE_FORMULAS = [
+  {ar:"سُبْحَانَ الله", lat:"SubhanAllah"},
+  {ar:"الْحَمْدُ لِلَّه", lat:"Alhamdulillah"},
+  {ar:"اللَّهُ أَكْبَر", lat:"Allahu Akbar"},
+  {ar:"لَا إِلَهَ إِلَّا الله", lat:"La ilaha illallah"},
+  {ar:"أَسْتَغْفِرُ اللهَ", lat:"Astaghfirullah"},
+  {ar:"سُبْحَانَ اللهِ وَبِحَمْدِهِ", lat:"SubhanAllah wa bihamdihi"},
+  {ar:"اللَّهُمَّ صَلِّ عَلَى مُحَمَّد", lat:"Allahumma salli 'ala Muhammad"},
+  {ar:"لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ", lat:"La hawla wa la quwwata illa billah"},
+];
+const FREE = { id:"free", free:true };
+
+const PRESETS = [
+  { t:{fr:"Salawat du vendredi", ar:"صلوات الجمعة"}, ar:"اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّد", target:10000 },
+  { t:{fr:"Istighfar ensemble", ar:"استغفار جماعي"}, ar:"أَسْتَغْفِرُ اللهَ", target:5000 },
+  { t:{fr:"Tasbih ensemble", ar:"تسبيح جماعي"}, ar:"سُبْحَانَ اللهِ وَبِحَمْدِهِ", target:3300 },
+];
+
+const BADGES = [
+  {id:"streak7",  e:"🔥", n:{fr:"Constant",ar:"مواظب"},          c:{fr:"7 jours de suite",ar:"7 أيام متتالية"},        ok:()=>streak()>=7},
+  {id:"streak30", e:"🌟", n:{fr:"Inébranlable",ar:"راسخ"},       c:{fr:"30 jours de suite",ar:"30 يومًا متتاليًا"},     ok:()=>streak()>=30},
+  {id:"life1k",   e:"📿", n:{fr:"1 000 dhikr",ar:"1000 ذكر"},    c:{fr:"1 000 dhikr cumulés",ar:"1000 ذكر إجمالًا"},   ok:()=>lifeTotal()>=1000},
+  {id:"life10k",  e:"💎", n:{fr:"10 000 dhikr",ar:"10000 ذكر"},  c:{fr:"10 000 dhikr cumulés",ar:"10000 ذكر إجمالًا"}, ok:()=>lifeTotal()>=10000},
+  {id:"salawat",  e:"🕌", n:{fr:"Salawat ×500",ar:"500 صلاة"},   c:{fr:"500 salawat cumulées",ar:"500 صلاة على النبي ﷺ"}, ok:()=>lifeOf("salawat")>=500},
+  {id:"tawba",    e:"🤍", n:{fr:"Cœur qui revient",ar:"قلب منيب"}, c:{fr:"100 istighfar en un jour",ar:"100 استغفار في يوم"}, ok:()=>Object.values(db.days).some(d=>d.counts&&d.counts.istighfar>=100)},
+  {id:"fullday",  e:"🏅", n:{fr:"Journée parfaite",ar:"يوم كامل"}, c:{fr:"Tous les objectifs en un jour",ar:"كل الأهداف في يوم"}, ok:()=>Object.values(db.days).some(fullDay)},
+  {id:"free1k",   e:"♾️", n:{fr:"Misbaha infinie",ar:"مسبحة لا تنتهي"}, c:{fr:"1 000 en dhikr libre",ar:"1000 ذكر حر"},  ok:()=>lifeOf("free")>=1000},
+  {id:"group",    e:"🤝", n:{fr:"Ensemble",ar:"معًا"},            c:{fr:"Membre d'un groupe",ar:"عضو في مجموعة"},       ok:()=>db.groupList.length>0},
+];
+function lifeTotal(){ let s=0; for (const k in db.days) s += dayTotal(db.days[k]); return s; }
+function lifeOf(id){ let s=0; for (const k in db.days){ const d=db.days[k]; if (d.counts && d.counts[id]) s += d.counts[id]; } return s; }
+function fullDay(d){
+  if (!d || !d.counts) return false;
+  if (!ADHKAR.every(a => d.counts[a.id] >= tgt(a))) return false;
+  return CHECK.m.every(it => d.check && d.check.m && d.check.m.includes(it.id)) &&
+         CHECK.s.every(it => d.check && d.check.s && d.check.s.includes(it.id));
+}
+
+/* =====================================================================
+   ADHKAR DU MATIN, DU SOIR ET DU COUCHER — textes complets
+   Coran & Sunna, d'après Hisn al-Muslim (La Citadelle du Musulman).
+   A(id, titre, répétitions, texte arabe, traduction FR, source, mérite)
+===================================================================== */
+const A = (id,t,d,txt,tr,src,fadl) => ({id,t,d,txt,tr,src,fadl});
+
+const T_QULS = "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ ✻ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ✻ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ";
+const T_QULS_FR = "Dis : Il est Allah, Unique. Allah, le Seul à être imploré. Il n'a jamais engendré et n'a pas été engendré, et nul n'est égal à Lui. ✻ Dis : Je cherche protection auprès du Seigneur de l'aube naissante, contre le mal des êtres qu'Il a créés, contre le mal de l'obscurité quand elle s'étend, contre le mal de celles qui soufflent sur les nœuds, et contre le mal de l'envieux quand il envie. ✻ Dis : Je cherche protection auprès du Seigneur des hommes, le Souverain des hommes, Dieu des hommes, contre le mal du mauvais conseiller furtif qui souffle le mal dans les poitrines des hommes, qu'il soit des djinns ou des hommes.";
+const T_KURSI = "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ، لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ، لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ، مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ، يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ، وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ، وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ، وَلَا يَئُودُهُ حِفْظُهُمَا، وَهُوَ الْعَلِيُّ الْعَظِيمُ";
+const T_KURSI_FR = "Allah ! Point de divinité à part Lui, le Vivant, Celui qui subsiste par Lui-même. Ni somnolence ni sommeil ne Le saisissent. À Lui appartient tout ce qui est dans les cieux et sur la terre. Qui peut intercéder auprès de Lui sans Sa permission ? Il connaît leur passé et leur avenir, et ils n'embrassent de Sa science que ce qu'Il veut. Son Trône déborde les cieux et la terre, dont la garde ne Lui coûte aucune peine. Et Il est le Très-Haut, le Très-Grand.";
+
+const IT = {
+  /* ---------- communs matin / soir ---------- */
+  kursi: A("kursi",
+    {fr:"Ayat al-Kursi", ar:"آية الكرسي"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    T_KURSI, T_KURSI_FR,
+    {fr:"Coran 2:255 — an-Nasa'i, al-Hakim", ar:"البقرة 255 — النسائي والحاكم"},
+    {fr:"Qui la récite le matin est protégé jusqu'au soir, et qui la récite le soir est protégé jusqu'au matin.",
+     ar:"مَن قالها حين يُصبح أُجير حتى يُمسي"}),
+
+  quls: A("quls",
+    {fr:"Al-Ikhlas, Al-Falaq, An-Nas", ar:"الإخلاص والفلق والناس"},
+    {fr:"3 fois chacune", ar:"ثلاث مرات لكل سورة"},
+    T_QULS, T_QULS_FR,
+    {fr:"Coran 112-114 — Abu Dawud 5082, Tirmidhi 3575", ar:"الإخلاص والفلق والناس — أبو داود 5082"},
+    {fr:"« Elles te suffiront contre toute chose. »", ar:"«تكفيك من كل شيء»"}),
+
+  asbahna: A("asbahna",
+    {fr:"Asbahna wa asbahal-mulku lillah", ar:"أصبحنا وأصبح الملك لله"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ. رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ",
+    "Nous voici au matin et le royaume appartient à Allah. Louange à Allah. Point de divinité si ce n'est Allah, Seul, sans associé ; à Lui la royauté, à Lui la louange, et Il est capable de toute chose. Seigneur, je Te demande le bien de ce jour et le bien de ce qui le suit, et je cherche protection auprès de Toi contre le mal de ce jour et le mal de ce qui le suit. Seigneur, je cherche protection auprès de Toi contre la paresse et les affres de la vieillesse. Seigneur, je cherche protection auprès de Toi contre un châtiment dans le Feu et un châtiment dans la tombe.",
+    {fr:"Muslim 2723", ar:"صحيح مسلم 2723"}),
+
+  amsayna: A("amsayna",
+    {fr:"Amsayna wa amsal-mulku lillah", ar:"أمسينا وأمسى الملك لله"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا. رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ",
+    "Nous voici au soir et le royaume appartient à Allah. Louange à Allah. Point de divinité si ce n'est Allah, Seul, sans associé ; à Lui la royauté, à Lui la louange, et Il est capable de toute chose. Seigneur, je Te demande le bien de cette nuit et le bien de ce qui la suit, et je cherche protection auprès de Toi contre le mal de cette nuit et le mal de ce qui la suit. Seigneur, je cherche protection auprès de Toi contre la paresse et les affres de la vieillesse. Seigneur, je cherche protection auprès de Toi contre un châtiment dans le Feu et un châtiment dans la tombe.",
+    {fr:"Muslim 2723", ar:"صحيح مسلم 2723"}),
+
+  bikaM: A("bika",
+    {fr:"Allahumma bika asbahna", ar:"اللهم بك أصبحنا"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ",
+    "Ô Allah, c'est par Toi que nous entrons dans le matin, par Toi que nous entrons dans le soir, par Toi que nous vivons et par Toi que nous mourons ; et vers Toi est la résurrection.",
+    {fr:"Tirmidhi 3391", ar:"الترمذي 3391"}),
+
+  bikaS: A("bika",
+    {fr:"Allahumma bika amsayna", ar:"اللهم بك أمسينا"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ",
+    "Ô Allah, c'est par Toi que nous entrons dans le soir, par Toi que nous entrons dans le matin, par Toi que nous vivons et par Toi que nous mourons ; et vers Toi est le retour final.",
+    {fr:"Tirmidhi 3391", ar:"الترمذي 3391"}),
+
+  sayyid: A("sayyid",
+    {fr:"Sayyid al-Istighfar", ar:"سيد الاستغفار"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+    "Ô Allah, Tu es mon Seigneur, il n'y a de divinité que Toi. Tu m'as créé et je suis Ton serviteur, fidèle à Ton engagement et à Ta promesse autant que je le peux. Je cherche protection auprès de Toi contre le mal que j'ai commis. Je reconnais Ton bienfait envers moi et je reconnais mon péché : pardonne-moi, car nul ne pardonne les péchés si ce n'est Toi.",
+    {fr:"Bukhari 6306", ar:"صحيح البخاري 6306"},
+    {fr:"« Qui la dit avec conviction le jour et meurt avant le soir fait partie des gens du Paradis. »",
+     ar:"«مَن قالها موقنًا بها فمات من يومه دخل الجنة»"}),
+
+  ushhidukaM: A("ushhiduka",
+    {fr:"Allahumma inni asbahtu ush-hiduka", ar:"اللهم إني أصبحت أشهدك"},
+    {fr:"4 fois", ar:"أربع مرات"},
+    "اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ",
+    "Ô Allah, me voici au matin, Te prenant à témoin, ainsi que les porteurs de Ton Trône, Tes anges et toutes Tes créatures, que Tu es Allah, il n'y a de divinité que Toi, Seul, sans associé, et que Muhammad est Ton serviteur et Ton messager.",
+    {fr:"Abu Dawud 5069", ar:"أبو داود 5069"},
+    {fr:"Allah affranchit du Feu celui qui la dit quatre fois.", ar:"أعتقه الله من النار"}),
+
+  ushhidukaS: A("ushhiduka",
+    {fr:"Allahumma inni amsaytu ush-hiduka", ar:"اللهم إني أمسيت أشهدك"},
+    {fr:"4 fois", ar:"أربع مرات"},
+    "اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ",
+    "Ô Allah, me voici au soir, Te prenant à témoin, ainsi que les porteurs de Ton Trône, Tes anges et toutes Tes créatures, que Tu es Allah, il n'y a de divinité que Toi, Seul, sans associé, et que Muhammad est Ton serviteur et Ton messager.",
+    {fr:"Abu Dawud 5069", ar:"أبو داود 5069"},
+    {fr:"Allah affranchit du Feu celui qui la dit quatre fois.", ar:"أعتقه الله من النار"}),
+
+  nimaM: A("nima",
+    {fr:"Allahumma ma asbaha bi min ni'ma", ar:"اللهم ما أصبح بي من نعمة"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ",
+    "Ô Allah, tout bienfait dont je me trouve pourvu ce matin, ou dont l'une de Tes créatures se trouve pourvue, vient de Toi Seul, sans associé. À Toi la louange et à Toi la gratitude.",
+    {fr:"Abu Dawud 5073", ar:"أبو داود 5073"},
+    {fr:"Il aura accompli le remerciement de sa journée.", ar:"فقد أدّى شكر يومه"}),
+
+  nimaS: A("nima",
+    {fr:"Allahumma ma amsa bi min ni'ma", ar:"اللهم ما أمسى بي من نعمة"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ",
+    "Ô Allah, tout bienfait dont je me trouve pourvu ce soir, ou dont l'une de Tes créatures se trouve pourvue, vient de Toi Seul, sans associé. À Toi la louange et à Toi la gratitude.",
+    {fr:"Abu Dawud 5073", ar:"أبو داود 5073"},
+    {fr:"Il aura accompli le remerciement de sa nuit.", ar:"فقد أدّى شكر ليلته"}),
+
+  hasbi: A("hasbi",
+    {fr:"Hasbiyallahu la ilaha illa Huwa", ar:"حسبي الله لا إله إلا هو"},
+    {fr:"7 fois", ar:"سبع مرات"},
+    "حَسْبِيَ اللهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+    "Allah me suffit, il n'y a de divinité que Lui. C'est en Lui que je place ma confiance, et Il est le Seigneur du Trône immense.",
+    {fr:"Abu Dawud 5081", ar:"أبو داود 5081"},
+    {fr:"Allah lui suffira pour tout ce qui le préoccupe.", ar:"كفاه الله ما أهمّه"}),
+
+  afiya: A("afiya",
+    {fr:"Allahumma inni as'aluka al-'afwa wal-'afiya", ar:"اللهم إني أسألك العفو والعافية"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي",
+    "Ô Allah, je Te demande le pardon et la préservation dans ce monde et dans l'au-delà. Ô Allah, je Te demande le pardon et la préservation dans ma religion, ma vie ici-bas, ma famille et mes biens. Ô Allah, voile mes défauts et apaise mes craintes. Ô Allah, protège-moi de devant moi, de derrière moi, de ma droite, de ma gauche et de dessus moi ; et je cherche refuge dans Ta grandeur contre le fait d'être englouti par en dessous.",
+    {fr:"Abu Dawud 5074, Ibn Majah 3871", ar:"أبو داود 5074 وابن ماجه 3871"}),
+
+  ghayb: A("ghayb",
+    {fr:"Allahumma 'alimal-ghaybi wash-shahada", ar:"اللهم عالم الغيب والشهادة"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءًا أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ",
+    "Ô Allah, Connaisseur de l'invisible et du visible, Créateur des cieux et de la terre, Seigneur et Souverain de toute chose : j'atteste qu'il n'y a de divinité que Toi. Je cherche protection auprès de Toi contre le mal de mon âme, contre le mal du diable et de son association, et contre le fait de commettre un mal envers moi-même ou de l'attirer sur un musulman.",
+    {fr:"Tirmidhi 3392, Abu Dawud 5067", ar:"الترمذي 3392 وأبو داود 5067"}),
+
+  yadurru: A("yadurru",
+    {fr:"Bismillahi alladhi la yadurru", ar:"بسم الله الذي لا يضر"},
+    {fr:"3 fois", ar:"ثلاث مرات"},
+    "بِسْمِ اللهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+    "Au nom d'Allah, Celui dont le nom protège de tout mal sur la terre et dans le ciel ; et Il est l'Audient, l'Omniscient.",
+    {fr:"Abu Dawud 5088, Tirmidhi 3388", ar:"أبو داود 5088 والترمذي 3388"},
+    {fr:"Rien ne pourra lui nuire.", ar:"لم يضرّه شيء"}),
+
+  raditu: A("raditu",
+    {fr:"Raditu billahi Rabban", ar:"رضيت بالله ربًا"},
+    {fr:"3 fois", ar:"ثلاث مرات"},
+    "رَضِيتُ بِاللهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا",
+    "Je suis satisfait d'Allah comme Seigneur, de l'islam comme religion et de Muhammad ﷺ comme prophète.",
+    {fr:"Abu Dawud 5072, Tirmidhi 3389", ar:"أبو داود 5072 والترمذي 3389"},
+    {fr:"Il incombe à Allah de le satisfaire au Jour de la Résurrection.", ar:"كان حقًا على الله أن يُرضيه"}),
+
+  yahayyu: A("yahayyu",
+    {fr:"Ya Hayyu ya Qayyum", ar:"يا حي يا قيوم"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ",
+    "Ô Vivant, ô Celui qui subsiste par Lui-même, j'implore Ton secours par Ta miséricorde. Améliore toute ma situation et ne me confie pas à moi-même, ne serait-ce que le temps d'un clin d'œil.",
+    {fr:"an-Nasa'i (Amal al-yawm), al-Hakim", ar:"النسائي في عمل اليوم والليلة والحاكم"}),
+
+  fitraM: A("fitra",
+    {fr:"Asbahna 'ala fitratil-islam", ar:"أصبحنا على فطرة الإسلام"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِينَ",
+    "Nous voici au matin sur la nature originelle de l'islam, sur la parole de sincérité, sur la religion de notre prophète Muhammad ﷺ et sur la voie de notre père Ibrahim, pur monothéiste et soumis, qui n'était point du nombre des associateurs.",
+    {fr:"Ahmad 15367", ar:"مسند أحمد 15367"}),
+
+  fitraS: A("fitra",
+    {fr:"Amsayna 'ala fitratil-islam", ar:"أمسينا على فطرة الإسلام"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِينَ",
+    "Nous voici au soir sur la nature originelle de l'islam, sur la parole de sincérité, sur la religion de notre prophète Muhammad ﷺ et sur la voie de notre père Ibrahim, pur monothéiste et soumis, qui n'était point du nombre des associateurs.",
+    {fr:"Ahmad 15367", ar:"مسند أحمد 15367"}),
+
+  sbh100: A("sbh100",
+    {fr:"SubhanAllahi wa bihamdih", ar:"سبحان الله وبحمده"},
+    {fr:"100 fois", ar:"مائة مرة"},
+    "سُبْحَانَ اللهِ وَبِحَمْدِهِ",
+    "Gloire et louange à Allah.",
+    {fr:"Muslim 2691", ar:"صحيح مسلم 2691"},
+    {fr:"Ses péchés sont effacés, fussent-ils comme l'écume de la mer.", ar:"حُطّت خطاياه وإن كانت مثل زبد البحر"}),
+
+  tahlil: A("tahlil",
+    {fr:"La ilaha illallahu wahdahu la sharika lah", ar:"لا إله إلا الله وحده لا شريك له"},
+    {fr:"10 fois (ou 100)", ar:"عشر مرات (أو مائة)"},
+    "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+    "Point de divinité si ce n'est Allah, Seul, sans associé. À Lui la royauté, à Lui la louange, et Il est capable de toute chose.",
+    {fr:"Bukhari 3293, Muslim 2691", ar:"البخاري 3293 ومسلم 2691"},
+    {fr:"Dite cent fois : équivalent de l'affranchissement de dix esclaves, et protection contre le diable jusqu'au soir.",
+     ar:"مَن قالها مائة مرة كانت له عدل عشر رقاب"}),
+
+  adada: A("adada",
+    {fr:"SubhanAllahi wa bihamdihi 'adada khalqih", ar:"سبحان الله وبحمده عدد خلقه"},
+    {fr:"3 fois (après le Fajr)", ar:"ثلاث مرات بعد الفجر"},
+    "سُبْحَانَ اللهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ",
+    "Gloire et louange à Allah autant que le nombre de Ses créatures, autant que Sa satisfaction, autant que le poids de Son Trône et l'encre de Ses paroles.",
+    {fr:"Muslim 2726", ar:"صحيح مسلم 2726"},
+    {fr:"Elle pèse plus lourd que tout ce qui a été dit depuis l'aube.", ar:"تعدل ما قيل منذ الصباح"}),
+
+  ilman: A("ilman",
+    {fr:"Allahumma inni as'aluka 'ilman nafi'an", ar:"اللهم إني أسألك علمًا نافعًا"},
+    {fr:"1 fois (après le Fajr)", ar:"مرة واحدة بعد الفجر"},
+    "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا",
+    "Ô Allah, je Te demande une science utile, une subsistance licite et bonne, et une œuvre agréée.",
+    {fr:"Ibn Majah 925", ar:"ابن ماجه 925"}),
+
+  kalimat: A("kalimat",
+    {fr:"A'udhu bikalimatillahit-tammat", ar:"أعوذ بكلمات الله التامات"},
+    {fr:"3 fois", ar:"ثلاث مرات"},
+    "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+    "Je cherche protection par les paroles parfaites d'Allah contre le mal de ce qu'Il a créé.",
+    {fr:"Muslim 2709", ar:"صحيح مسلم 2709"},
+    {fr:"Rien ne lui nuira cette nuit-là.", ar:"لم يضرّه شيء تلك الليلة"}),
+
+  istighfar: A("istighfar",
+    {fr:"Astaghfirullaha wa atubu ilayh", ar:"أستغفر الله وأتوب إليه"},
+    {fr:"100 fois", ar:"مائة مرة"},
+    "أَسْتَغْفِرُ اللهَ وَأَتُوبُ إِلَيْهِ",
+    "Je demande pardon à Allah et je reviens repentant vers Lui.",
+    {fr:"Bukhari 6307", ar:"صحيح البخاري 6307"},
+    {fr:"Le Prophète ﷺ demandait pardon cent fois par jour.", ar:"كان النبي ﷺ يستغفر في اليوم مائة مرة"}),
+
+  salawat: A("salawat",
+    {fr:"Salat sur le Prophète ﷺ", ar:"الصلاة على النبي ﷺ"},
+    {fr:"10 fois", ar:"عشر مرات"},
+    "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
+    "Ô Allah, prie et accorde le salut sur notre prophète Muhammad.",
+    {fr:"at-Tabarani", ar:"الطبراني"},
+    {fr:"« Qui prie sur moi dix fois le matin et dix fois le soir obtiendra mon intercession. »",
+     ar:"«مَن صلّى عليّ حين يصبح عشرًا وحين يمسي عشرًا أدركته شفاعتي»"}),
+
+  /* ---------- adhkar du coucher ---------- */
+  wudu: A("wudu",
+    {fr:"Ablutions et côté droit", ar:"الوضوء والنوم على الشق الأيمن"},
+    {fr:"sunna avant de dormir", ar:"سنة قبل النوم"},
+    "",
+    "« Lorsque tu gagnes ta couche, fais tes ablutions comme pour la prière, puis allonge-toi sur ton côté droit. »",
+    {fr:"Bukhari 247, Muslim 2710", ar:"البخاري 247 ومسلم 2710"}),
+
+  naftha: A("naftha",
+    {fr:"Souffler dans les mains et les 3 sourates", ar:"النفث في الكفين وقراءة المعوذات"},
+    {fr:"3 fois", ar:"ثلاث مرات"},
+    T_QULS,
+    "Réunis tes paumes, souffle dedans, récite Al-Ikhlas, Al-Falaq et An-Nas, puis passe tes mains sur tout ce que tu peux atteindre de ton corps, en commençant par la tête, le visage et le devant du corps. À faire trois fois. — " + T_QULS_FR,
+    {fr:"Bukhari 5017", ar:"صحيح البخاري 5017"}),
+
+  kursiN: A("kursi",
+    {fr:"Ayat al-Kursi", ar:"آية الكرسي"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    T_KURSI, T_KURSI_FR,
+    {fr:"Coran 2:255 — Bukhari 2311", ar:"البقرة 255 — البخاري 2311"},
+    {fr:"« Un gardien d'Allah restera avec toi et aucun diable ne t'approchera jusqu'au matin. »",
+     ar:"«لن يزال عليك من الله حافظ ولا يقربك شيطان حتى تصبح»"}),
+
+  baqara2: A("baqara2",
+    {fr:"Les deux derniers versets d'Al-Baqara", ar:"خواتيم سورة البقرة"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ، كُلٌّ آمَنَ بِاللهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ، لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ، وَقَالُوا سَمِعْنَا وَأَطَعْنَا، غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ ۝ لَا يُكَلِّفُ اللهُ نَفْسًا إِلَّا وُسْعَهَا، لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ، رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا، رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا، رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ، وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا، أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ",
+    "Le Messager a cru en ce qu'on a fait descendre vers lui de la part de son Seigneur, ainsi que les croyants : tous ont cru en Allah, en Ses anges, à Ses livres et en Ses messagers ; nous ne faisons aucune distinction entre Ses messagers. Et ils ont dit : nous avons entendu et obéi. Seigneur, nous implorons Ton pardon, et c'est vers Toi qu'est le retour. ✻ Allah n'impose à aucune âme une charge supérieure à sa capacité. Elle sera récompensée du bien qu'elle aura fait, punie du mal qu'elle aura fait. Seigneur, ne nous châtie pas s'il nous arrive d'oublier ou de commettre une erreur. Seigneur, ne nous charge pas d'un fardeau lourd comme Tu l'as fait porter à ceux qui nous ont précédés. Seigneur, ne nous impose pas ce que nous ne pouvons supporter. Efface nos fautes, pardonne-nous et fais-nous miséricorde. Tu es notre Maître : accorde-nous donc la victoire sur les gens mécréants.",
+    {fr:"Coran 2:285-286 — Bukhari 5009, Muslim 807", ar:"البقرة 285-286 — البخاري 5009"},
+    {fr:"« Qui les récite la nuit, elles lui suffiront. »", ar:"«مَن قرأهما في ليلة كفتاه»"}),
+
+  kafirun: A("kafirun",
+    {fr:"Sourate Al-Kafirun", ar:"سورة الكافرون"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "قُلْ يَا أَيُّهَا الْكَافِرُونَ ۝ لَا أَعْبُدُ مَا تَعْبُدُونَ ۝ وَلَا أَنْتُمْ عَابِدُونَ مَا أَعْبُدُ ۝ وَلَا أَنَا عَابِدٌ مَا عَبَدْتُمْ ۝ وَلَا أَنْتُمْ عَابِدُونَ مَا أَعْبُدُ ۝ لَكُمْ دِينُكُمْ وَلِيَ دِينِ",
+    "Dis : Ô vous les mécréants ! Je n'adore pas ce que vous adorez. Et vous n'êtes pas adorateurs de ce que j'adore. Je ne suis pas adorateur de ce que vous adorez. Et vous n'êtes pas adorateurs de ce que j'adore. À vous votre religion, et à moi ma religion.",
+    {fr:"Coran 109 — Abu Dawud 5055", ar:"الكافرون — أبو داود 5055"},
+    {fr:"« Lis-la puis dors, car elle est un désaveu de l'associationnisme. »",
+     ar:"«اقرأها ثم نم على خاتمتها فإنها براءة من الشرك»"}),
+
+  mulk: A("mulk",
+    {fr:"Sourate Al-Mulk", ar:"سورة الملك"},
+    {fr:"à lire dans le Coran", ar:"تُقرأ من المصحف"},
+    "",
+    "Sourate 67 (30 versets). Le Prophète ﷺ ne dormait pas avant de l'avoir récitée.",
+    {fr:"Tirmidhi 2892, an-Nasa'i", ar:"الترمذي 2892 والنسائي"},
+    {fr:"Elle intercède pour son lecteur jusqu'à ce qu'il soit pardonné.", ar:"شفعت لصاحبها حتى غُفر له"}),
+
+  tasbihN: A("tasbihN",
+    {fr:"Tasbih de Fatima", ar:"تسبيح فاطمة"},
+    {fr:"33 · 33 · 34", ar:"33 · 33 · 34"},
+    "سُبْحَانَ اللهِ (33) ✻ الْحَمْدُ لِلَّهِ (33) ✻ اللهُ أَكْبَرُ (34)",
+    "Gloire à Allah 33 fois, louange à Allah 33 fois, Allah est le plus grand 34 fois.",
+    {fr:"Bukhari 5362, Muslim 2727", ar:"البخاري 5362 ومسلم 2727"},
+    {fr:"« Cela vaut mieux pour vous qu'un serviteur. »", ar:"«خير لكما من خادم»"}),
+
+  aslamtu: A("aslamtu",
+    {fr:"Allahumma aslamtu nafsi ilayk", ar:"اللهم أسلمت نفسي إليك"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ، وَفَوَّضْتُ أَمْرِي إِلَيْكَ، وَوَجَّهْتُ وَجْهِي إِلَيْكَ، وَأَلْجَأْتُ ظَهْرِي إِلَيْكَ، رَغْبَةً وَرَهْبَةً إِلَيْكَ، لَا مَلْجَأَ وَلَا مَنْجَا مِنْكَ إِلَّا إِلَيْكَ، آمَنْتُ بِكِتَابِكَ الَّذِي أَنْزَلْتَ، وَبِنَبِيِّكَ الَّذِي أَرْسَلْتَ",
+    "Ô Allah, je me soumets à Toi, je Te confie mon affaire, je tourne mon visage vers Toi et j'adosse mon dos à Toi, par désir et par crainte de Toi. Il n'y a de refuge ni de salut contre Toi qu'auprès de Toi. Je crois en Ton Livre que Tu as fait descendre et en Ton prophète que Tu as envoyé.",
+    {fr:"Bukhari 247, Muslim 2710", ar:"البخاري 247 ومسلم 2710"},
+    {fr:"« Si tu meurs cette nuit-là, tu meurs sur la nature originelle. »",
+     ar:"«فإن مِتَّ من ليلتك مِتَّ على الفطرة»"}),
+
+  janbi: A("janbi",
+    {fr:"Bismika Rabbi wada'tu janbi", ar:"باسمك ربي وضعت جنبي"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ",
+    "En Ton nom, mon Seigneur, je pose mon flanc et c'est par Toi que je le relève. Si Tu retiens mon âme, fais-lui miséricorde ; et si Tu la relâches, protège-la par ce dont Tu protèges Tes serviteurs vertueux.",
+    {fr:"Bukhari 6320, Muslim 2714", ar:"البخاري 6320 ومسلم 2714"}),
+
+  rabbas: A("rabbas",
+    {fr:"Allahumma Rabbas-samawati wal-ard", ar:"اللهم رب السماوات والأرض"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "اللَّهُمَّ رَبَّ السَّمَاوَاتِ وَرَبَّ الْأَرْضِ وَرَبَّ الْعَرْشِ الْعَظِيمِ، رَبَّنَا وَرَبَّ كُلِّ شَيْءٍ، فَالِقَ الْحَبِّ وَالنَّوَى، وَمُنْزِلَ التَّوْرَاةِ وَالْإِنْجِيلِ وَالْفُرْقَانِ، أَعُوذُ بِكَ مِنْ شَرِّ كُلِّ شَيْءٍ أَنْتَ آخِذٌ بِنَاصِيَتِهِ. اللَّهُمَّ أَنْتَ الْأَوَّلُ فَلَيْسَ قَبْلَكَ شَيْءٌ، وَأَنْتَ الْآخِرُ فَلَيْسَ بَعْدَكَ شَيْءٌ، وَأَنْتَ الظَّاهِرُ فَلَيْسَ فَوْقَكَ شَيْءٌ، وَأَنْتَ الْبَاطِنُ فَلَيْسَ دُونَكَ شَيْءٌ، اقْضِ عَنَّا الدَّيْنَ وَأَغْنِنَا مِنَ الْفَقْرِ",
+    "Ô Allah, Seigneur des cieux, Seigneur de la terre et Seigneur du Trône immense ; notre Seigneur et le Seigneur de toute chose ; Toi qui fends la graine et le noyau ; Toi qui as fait descendre la Torah, l'Évangile et le Discernement : je cherche protection auprès de Toi contre le mal de toute chose dont Tu tiens le toupet. Ô Allah, Tu es le Premier, rien n'est avant Toi ; Tu es le Dernier, rien n'est après Toi ; Tu es l'Apparent, rien n'est au-dessus de Toi ; Tu es le Caché, rien n'est en-deçà de Toi. Acquitte pour nous notre dette et préserve-nous de la pauvreté.",
+    {fr:"Muslim 2713", ar:"صحيح مسلم 2713"}),
+
+  at3amana: A("at3amana",
+    {fr:"Alhamdulillahil-ladhi at'amana", ar:"الحمد لله الذي أطعمنا"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا، وَكَفَانَا، وَآوَانَا، فَكَمْ مِمَّنْ لَا كَافِيَ لَهُ وَلَا مُؤْوِيَ",
+    "Louange à Allah qui nous a nourris, qui nous a abreuvés, qui nous a suffi et qui nous a donné un abri. Que de gens n'ont personne pour leur suffire ni pour les abriter.",
+    {fr:"Muslim 2715", ar:"صحيح مسلم 2715"}),
+
+  qini: A("qini",
+    {fr:"Allahumma qini 'adhabaka", ar:"اللهم قني عذابك"},
+    {fr:"3 fois (main droite sous la joue)", ar:"ثلاث مرات واليد اليمنى تحت الخد"},
+    "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ",
+    "Ô Allah, préserve-moi de Ton châtiment le jour où Tu ressusciteras Tes serviteurs.",
+    {fr:"Abu Dawud 5045, Tirmidhi 3398", ar:"أبو داود 5045 والترمذي 3398"}),
+
+  amut: A("amut",
+    {fr:"Bismika Allahumma amutu wa ahya", ar:"باسمك اللهم أموت وأحيا"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+    "En Ton nom, ô Allah, je meurs et je vis.",
+    {fr:"Bukhari 6324", ar:"صحيح البخاري 6324"}),
+
+  ghadab: A("ghadab",
+    {fr:"En cas de peur ou d'insomnie", ar:"عند الفزع أو الأرق"},
+    {fr:"si tu te réveilles effrayé", ar:"عند الاستيقاظ فزعًا"},
+    "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ، وَشَرِّ عِبَادِهِ، وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ",
+    "Je cherche protection par les paroles parfaites d'Allah contre Sa colère, contre Son châtiment, contre le mal de Ses serviteurs, contre les incitations des diables et contre leur présence auprès de moi.",
+    {fr:"Abu Dawud 3893, Tirmidhi 3528", ar:"أبو داود 3893 والترمذي 3528"}),
+
+  reveil: A("reveil",
+    {fr:"Au réveil", ar:"عند الاستيقاظ"},
+    {fr:"1 fois", ar:"مرة واحدة"},
+    "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+    "Louange à Allah qui nous a rendu la vie après nous avoir fait mourir, et c'est vers Lui qu'est la résurrection.",
+    {fr:"Bukhari 6312", ar:"صحيح البخاري 6312"}),
+};
+
+const CHECK = {
+  m: [IT.kursi, IT.quls, IT.asbahna, IT.bikaM, IT.sayyid, IT.ushhidukaM, IT.nimaM, IT.hasbi,
+      IT.afiya, IT.ghayb, IT.yadurru, IT.raditu, IT.yahayyu, IT.fitraM, IT.sbh100, IT.tahlil,
+      IT.adada, IT.ilman, IT.istighfar, IT.salawat],
+  s: [IT.kursi, IT.quls, IT.amsayna, IT.bikaS, IT.sayyid, IT.ushhidukaS, IT.nimaS, IT.hasbi,
+      IT.afiya, IT.ghayb, IT.yadurru, IT.raditu, IT.yahayyu, IT.fitraS, IT.sbh100, IT.tahlil,
+      IT.kalimat, IT.istighfar, IT.salawat],
+  n: [IT.wudu, IT.naftha, IT.kursiN, IT.baqara2, IT.kafirun, IT.mulk, IT.tasbihN, IT.aslamtu,
+      IT.janbi, IT.rabbas, IT.at3amana, IT.qini, IT.amut, IT.ghadab, IT.reveil],
+};
+
+/* ================= STATE ================= */
+const KEY = "adhkar_beta_v1";
+let db = { days:{}, lang:"fr" };
+try {
+  const raw = localStorage.getItem(KEY);
+  if (raw) db = JSON.parse(raw) || { days:{} };
+  if (!db.days) db.days = {};
+} catch(e){ db = { days:{} }; }
+if (db.lang !== "ar" && db.lang !== "fr") db.lang = "fr";
+/* migration : ancien format mono-groupe → liste de groupes */
+if (db.groupCode && !db.groupList) db.groupList = [{ code: db.groupCode, name: db.groupName || db.groupCode }];
+if (!Array.isArray(db.groupList)) db.groupList = [];
+if (!db.activeGroup && db.groupList.length) db.activeGroup = db.groupList[0].code;
+if (!db.targets || typeof db.targets !== "object") db.targets = {};
+if (["auto","light","dark"].indexOf(db.theme) < 0) db.theme = "auto";
+
+function applyTheme(){
+  const r = document.documentElement;
+  if (db.theme === "auto") r.removeAttribute("data-theme");
+  else r.setAttribute("data-theme", db.theme);
+}
+applyTheme();
+
+let lang = db.lang;
+function T(){ return STR[lang]; }
+
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){}
+  pushStats();
+}
+
+function dateKey(d){
+  const x = d || new Date();
+  return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");
+}
+function today(){
+  const k = dateKey();
+  if (!db.days[k]) db.days[k] = { counts:{}, check:{ m:[], s:[] } };
+  const d = db.days[k];
+  if (!d.counts) d.counts = {};
+  if (!d.check) d.check = { m:[], s:[], n:[] };
+  if (!d.check.n) d.check.n = [];
+  return d;
+}
+function countOf(id){ return today().counts[id] || 0; }
+/* objectif effectif : personnalisé si défini, sinon valeur par défaut */
+function tgt(a){
+  if (a.chain) return a.target;          /* le tasbih 33·33·34 reste fixe */
+  const v = db.targets[a.id];
+  return (v && v > 0) ? v : a.target;
+}
+function dayTotal(day){
+  if (!day || !day.counts) return 0;
+  let t = 0; for (const k in day.counts) t += day.counts[k];
+  return t;
+}
+function checklistDone(day, part){
+  if (!day || !day.check || !day.check[part]) return false;
+  return CHECK[part].every(it => day.check[part].includes(it.id));
+}
+function daySuccess(day){
+  if (!day) return false;
+  if (ADHKAR.some(a => (day.counts && day.counts[a.id] >= tgt(a)))) return true;
+  return checklistDone(day,"m") || checklistDone(day,"s") || checklistDone(day,"n");
+}
+function streak(){
+  let n = 0;
+  if (daySuccess(db.days[dateKey()])) n++;
+  for (let i=1;;i++){
+    const x = new Date(); x.setDate(x.getDate()-i);
+    if (daySuccess(db.days[dateKey(x)])) n++;
+    else break;
+  }
+  return n;
+}
+function goalsDone(){
+  const day = today();
+  let n = 0;
+  ADHKAR.forEach(a => { if ((day.counts[a.id]||0) >= tgt(a)) n++; });
+  if (checklistDone(day,"m")) n++;
+  if (checklistDone(day,"s")) n++;
+  if (checklistDone(day,"n")) n++;
+  return n;
+}
+
+function vibrate(p){ if (db.novibe) return; if (navigator.vibrate) { try{ navigator.vibrate(p); }catch(e){} } }
+
+/* ================= HORAIRES DE PRIÈRE ================= */
+const PR_ORDER = ["Fajr","Sunrise","Dhuhr","Asr","Maghrib","Isha"];
+let prayerMsg = "";
+
+function hhmm(x){ const m = String(x||"").match(/(\d{1,2}):(\d{2})/); return m ? m[1].padStart(2,"0")+":"+m[2] : ""; }
+function toMin(x){ const m = String(x||"").match(/(\d{1,2}):(\d{2})/); return m ? (+m[1])*60 + (+m[2]) : null; }
+function nowMin(){ const d = new Date(); return d.getHours()*60 + d.getMinutes(); }
+function prayerTimes(){ return (db.prayer && db.prayer.date === dateKey()) ? db.prayer.times : null; }
+
+function nextPrayer(){
+  const p = prayerTimes(); if (!p) return null;
+  const n = nowMin();
+  for (let i=0;i<PR_ORDER.length;i++){
+    const k = PR_ORDER[i], v = toMin(p[k]);
+    if (v != null && v > n) return { key:k, in:v-n };
+  }
+  const f = toMin(p.Fajr);
+  return { key:"Fajr", in:(24*60 - n) + (f||0) };
+}
+function currentPrayer(){
+  const p = prayerTimes(); if (!p) return null;
+  const n = nowMin();
+  let c = "Isha";
+  PR_ORDER.forEach(k => { const v = toMin(p[k]); if (v != null && v <= n) c = k; });
+  return c;
+}
+/* fenêtre des adhkar : matin du Fajr à l'Asr, soir de l'Asr au Fajr */
+/* matin : Fajr → Asr · soir : Asr → Isha · coucher : Isha → Fajr */
+function dayPart(){
+  const p = prayerTimes();
+  if (!p){
+    const h = new Date().getHours();
+    if (h >= 21 || h < 3) return "n";
+    return (h >= 15) ? "s" : "m";
+  }
+  const n = nowMin(), f = toMin(p.Fajr), a = toMin(p.Asr), i = toMin(p.Isha);
+  if (f == null || a == null) return "m";
+  if (n < f) return "n";
+  if (i != null && n >= i) return "n";
+  return (n >= a) ? "s" : "m";
+}
+
+async function fetchPrayer(){
+  if (!db.geo) return;
+  if (db.prayer && db.prayer.date === dateKey()) return;
+  try{
+    const url = "https://api.aladhan.com/v1/timings/" + Math.floor(Date.now()/1000) +
+      "?latitude=" + db.geo.lat + "&longitude=" + db.geo.lon + "&method=" + (db.geo.method || 12);
+    const res = await fetch(url);
+    const j = await res.json();
+    const ti = j && j.data && j.data.timings;
+    if (!ti) throw new Error("no data");
+    db.prayer = { date: dateKey(), times: {
+      Fajr:hhmm(ti.Fajr), Sunrise:hhmm(ti.Sunrise), Dhuhr:hhmm(ti.Dhuhr),
+      Asr:hhmm(ti.Asr), Maghrib:hhmm(ti.Maghrib), Isha:hhmm(ti.Isha) } };
+    prayerMsg = "";
+    save(); safeRender();
+  }catch(e){
+    prayerMsg = T().prayerErr;
+    safeRender();
+  }
+}
+
+function askGeo(){
+  if (!navigator.geolocation){ prayerMsg = T().prayerErr; render(); return; }
+  prayerMsg = T().prayerWait; render();
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      db.geo = { lat:+pos.coords.latitude.toFixed(4), lon:+pos.coords.longitude.toFixed(4),
+                 method:(db.geo && db.geo.method) || 12 };
+      db.prayer = null; prayerMsg = "";
+      save(); render();
+      fetchPrayer();
+    },
+    () => { prayerMsg = T().prayerDenied; render(); },
+    { timeout:10000, maximumAge:3600000 }
+  );
+}
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+/* ================= FIREBASE (mode amis) ================= */
+const FB = { state: FB_CONFIG.apiKey ? "off" : "unconfigured", f:null, db:null, uid:null, msg:"" };
+let group = null;
+let challenges = [];
+let duas = [];
+let unsubGroup = null, unsubChal = null, unsubDuas = null;
+let amisErr = "";
+
+async function initFirebase(){
+  if (FB.state === "unconfigured") return;
+  FB.state = "connecting";
+  try{
+    const V = "10.12.2";
+    const [A,U,F] = await Promise.all([
+      import("https://www.gstatic.com/firebasejs/"+V+"/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/"+V+"/firebase-auth.js"),
+      import("https://www.gstatic.com/firebasejs/"+V+"/firebase-firestore.js"),
+    ]);
+    const app = A.initializeApp(FB_CONFIG);
+    FB.f = F;
+    FB.db = F.getFirestore(app);
+    const auth = U.getAuth(app);
+    const cred = await U.signInAnonymously(auth);
+    FB.auth = auth;
+    FB.uid = cred.user.uid;
+    FB.state = "ready";
+    if (db.activeGroup) attachGroup(db.activeGroup);
+  }catch(err){
+    FB.state = "error";
+    FB.msg = err && err.message ? err.message : String(err);
+  }
+  if (tab === "amis") safeRender();
+}
+
+function attachGroup(code){
+  if (unsubGroup) { unsubGroup(); unsubGroup = null; }
+  if (unsubChal)  { unsubChal();  unsubChal  = null; }
+  if (unsubDuas)  { unsubDuas();  unsubDuas  = null; }
+  const f = FB.f;
+  unsubDuas = f.onSnapshot(
+    f.query(f.collection(FB.db, "groups", code, "duas"), f.orderBy("createdAt","desc"), f.limit(15)),
+    (qs) => { duas = qs.docs.map(d => ({ id: d.id, ...d.data() })); if (tab === "amis") safeRender(); },
+    () => {}
+  );
+  unsubGroup = f.onSnapshot(f.doc(FB.db, "groups", code), (snap) => {
+    group = snap.exists() ? snap.data() : null;
+    if (tab === "amis") safeRender();
+  }, (err) => { amisErr = err.message; if (tab === "amis") safeRender(); });
+  unsubChal = f.onSnapshot(
+    f.query(f.collection(FB.db, "groups", code, "challenges"), f.orderBy("createdAt","desc"), f.limit(20)),
+    (qs) => {
+      challenges = qs.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (tab === "amis") safeRender();
+      if (cur && cur.challenge) paintCounter();
+    },
+    () => {}
+  );
+}
+
+const ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function makeCode(){ return Array.from({length:6}, () => ALPHA[Math.floor(Math.random()*ALPHA.length)]).join(""); }
+
+function switchGroup(code){
+  db.activeGroup = code;
+  addingGroup = false;
+  group = null; challenges = []; duas = [];
+  save();
+  attachGroup(code);
+  if (db.push) saveSub(db.push);   /* le nouveau groupe doit pouvoir me notifier */
+}
+
+async function createGroup(name){
+  const f = FB.f;
+  const code = makeCode();
+  await f.setDoc(f.doc(FB.db, "groups", code), {
+    name: name || "Adhkar", code, createdAt: f.serverTimestamp(),
+    members: { [FB.uid]: memberSnapshot() }
+  });
+  db.groupList.push({ code, name: name || "Adhkar" });
+  switchGroup(code);
+}
+
+async function joinGroup(code){
+  const f = FB.f;
+  code = code.toUpperCase().trim();
+  if (db.groupList.some(g => g.code === code)){ switchGroup(code); return; }
+  const snap = await f.getDoc(f.doc(FB.db, "groups", code));
+  if (!snap.exists()){ amisErr = T().notFound; safeRender(); return; }
+  await f.setDoc(f.doc(FB.db, "groups", code),
+    { members: { [FB.uid]: memberSnapshot() } }, { merge:true });
+  db.groupList.push({ code, name: snap.data().name || code });
+  switchGroup(code);
+}
+
+async function leaveGroup(){
+  const code = db.activeGroup;
+  if (!code) return;
+  const f = FB.f;
+  try{
+    await f.setDoc(f.doc(FB.db, "groups", code),
+      { members: { [FB.uid]: f.deleteField() } }, { merge:true });
+  }catch(e){}
+  db.groupList = db.groupList.filter(g => g.code !== code);
+  if (unsubGroup){ unsubGroup(); unsubGroup = null; }
+  if (unsubChal){ unsubChal(); unsubChal = null; }
+  if (unsubDuas){ unsubDuas(); unsubDuas = null; }
+  group = null; challenges = []; duas = [];
+  db.activeGroup = db.groupList.length ? db.groupList[0].code : null;
+  save();
+  if (db.activeGroup) attachGroup(db.activeGroup);
+}
+
+function memberSnapshot(){
+  return { name: db.profileName || "?", today: dayTotal(today()), streak: streak(),
+           date: dateKey(), ok: daySuccess(today()) ? dateKey() : "", t: Date.now() };
+}
+
+function yesterdayKey(){ const x = new Date(); x.setDate(x.getDate()-1); return dateKey(x); }
+
+/* streak d'équipe : calculé côté client, consolidé sur le doc du groupe */
+function teamStatus(){
+  if (!group || !group.members) return null;
+  const tk = dateKey();
+  const members = Object.values(group.members).map(m => ({ name: m.name || "?", ok: m.ok === tk }));
+  const missing = members.filter(m => !m.ok).map(m => m.name);
+  const team = group.team || { streak:0, lastDay:"" };
+  let shown = team.streak || 0;
+  if (team.lastDay !== tk && team.lastDay !== yesterdayKey()) shown = 0;
+  if (!missing.length && team.lastDay !== tk && FB.state === "ready"){
+    const ns = (team.lastDay === yesterdayKey()) ? (team.streak||0) + 1 : 1;
+    shown = ns;
+    FB.f.setDoc(FB.f.doc(FB.db, "groups", db.activeGroup),
+      { team: { streak: ns, lastDay: tk } }, { merge:true }).catch(()=>{});
+  }
+  return { streak: shown, missing, allOk: !missing.length };
+}
+
+/* mur de dou'as */
+async function postDua(text){
+  const f = FB.f;
+  await f.addDoc(f.collection(FB.db, "groups", db.activeGroup, "duas"), {
+    text, name: db.profileName || "?", uid: FB.uid, amin: {}, createdAt: f.serverTimestamp()
+  });
+  notifyGroup("dua");
+}
+function aminDua(id){
+  const f = FB.f;
+  f.setDoc(f.doc(FB.db, "groups", db.activeGroup, "duas", id),
+    { amin: { [FB.uid]: db.profileName || "?" } }, { merge:true }).catch(()=>{});
+}
+async function delDua(id){
+  const f = FB.f;
+  try{ await f.deleteDoc(f.doc(FB.db, "groups", db.activeGroup, "duas", id)); }catch(e){}
+}
+async function delChallenge(id){
+  const f = FB.f;
+  try{ await f.deleteDoc(f.doc(FB.db, "groups", db.activeGroup, "challenges", id)); }catch(e){}
+}
+
+/* ================= NOTIFICATIONS PUSH ================= */
+let notifMsg = "";
+
+function b64ToUint8(base64){
+  const pad = "=".repeat((4 - base64.length % 4) % 4);
+  const b64 = (base64 + pad).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(b64);
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+
+function pushSupported(){
+  return ("serviceWorker" in navigator) && ("PushManager" in window) && ("Notification" in window);
+}
+
+/* enregistre (ou retire) l'abonnement dans chacun de mes groupes */
+function saveSub(sub){
+  if (FB.state !== "ready" || !db.groupList.length) return Promise.resolve();
+  const f = FB.f;
+  const val = sub ? sub : f.deleteField();
+  return Promise.all(db.groupList.map(g =>
+    f.setDoc(f.doc(FB.db, "groups", g.code),
+      { members: { [FB.uid]: { push: val } } }, { merge:true }).catch(()=>{})
+  ));
+}
+
+async function enableNotifs(){
+  notifMsg = "";
+  if (!pushSupported()){ notifMsg = T().notifUnsupported; render(); return; }
+  if (!VAPID_PUBLIC){ notifMsg = T().notifSetupNeeded; render(); return; }
+  try{
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted"){ notifMsg = T().notifDenied; render(); return; }
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub){
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: b64ToUint8(VAPID_PUBLIC)
+      });
+    }
+    db.push = sub.toJSON();
+    save();
+    await saveSub(db.push);
+    vibrate([30,50,30]);
+  }catch(e){
+    notifMsg = (e && e.message) ? e.message : String(e);
+  }
+  render();
+}
+
+async function disableNotifs(){
+  notifMsg = "";
+  try{
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) await sub.unsubscribe();
+  }catch(e){}
+  db.push = null;
+  save();
+  await saveSub(null);
+  render();
+}
+
+/* prévient les autres membres du groupe (le texte est composé côté serveur) */
+async function notifyGroup(type, extra){
+  if (FB.state !== "ready" || !db.activeGroup || !FB.auth || !FB.auth.currentUser) return;
+  try{
+    const token = await FB.auth.currentUser.getIdToken();
+    await fetch(NOTIFY_URL, {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "Authorization":"Bearer "+token },
+      body: JSON.stringify({ group: db.activeGroup, type, extra })
+    });
+  }catch(e){ /* silencieux : une notification perdue ne doit rien casser */ }
+}
+
+let lastStatsPush = 0;
+function pushStats(){
+  if (FB.state !== "ready" || !db.groupList.length || !db.profileName) return;
+  const now = Date.now();
+  if (now - lastStatsPush < 8000) return;
+  lastStatsPush = now;
+  const f = FB.f;
+  db.groupList.forEach(g => {
+    f.setDoc(f.doc(FB.db, "groups", g.code),
+      { members: { [FB.uid]: memberSnapshot() } }, { merge:true }).catch(()=>{});
+  });
+}
+
+async function launchChallenge(title, ar, target, mode){
+  const f = FB.f;
+  target = parseInt(target, 10);
+  if (!target || target < 10) return;
+  await f.addDoc(f.collection(FB.db, "groups", db.activeGroup, "challenges"), {
+    title, ar, target, mode: mode || "team", total: 0, progress: {},
+    createdAt: f.serverTimestamp(), createdBy: FB.uid
+  });
+  notifyGroup("challenge", (typeof title === "object") ? (title.fr || title.ar) : title);
+}
+
+/* buffer local des taps de défi, envoyé par paquets */
+const pend = { cid:null, gcode:null, n:0 };
+let flushTimer = null;
+function scheduleFlush(){
+  if (pend.n >= 20){ flushPending(); return; }
+  if (!flushTimer) flushTimer = setTimeout(flushPending, 3000);
+}
+function flushPending(){
+  if (flushTimer){ clearTimeout(flushTimer); flushTimer = null; }
+  if (!pend.n || !pend.cid || !pend.gcode || FB.state !== "ready") return;
+  const k = pend.n, cid = pend.cid;
+  pend.n = 0;
+  const f = FB.f;
+  f.setDoc(f.doc(FB.db, "groups", pend.gcode, "challenges", cid), {
+    total: f.increment(k),
+    progress: { [FB.uid]: { n: f.increment(k), name: db.profileName || "?" } }
+  }, { merge:true }).catch(() => { pend.n += k; });
+}
+addEventListener("pagehide", flushPending);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushPending(); });
+
+/* ================= VIEWS ================= */
+const view = document.getElementById("view");
+let tab = "home";
+let checkPart = dayPart();
+let expanded = new Set();
+let addingGroup = false;
+let newChMode = "team";
+
+function safeRender(){
+  const a = document.activeElement;
+  if (a && (a.tagName === "INPUT" || a.tagName === "SELECT")) return;
+  render();
+}
+
+function ringSvg(pct, done){
+  const r = 20, c = 2*Math.PI*r;
+  const off = c * (1 - Math.min(pct,1));
+  const col = done ? "var(--gold)" : "var(--emerald)";
+  return '<svg width="46" height="46" viewBox="0 0 46 46">' +
+    '<circle cx="23" cy="23" r="'+r+'" fill="none" stroke="var(--track)" stroke-width="4"/>' +
+    '<circle cx="23" cy="23" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="4" stroke-linecap="round" ' +
+    'stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>';
+}
+
+function langBtn(){
+  return '<button class="langbtn" data-lang>'+T().other+'</button>';
+}
+function partTitle(p){
+  const t = T();
+  return (p === "m") ? t.morning : (p === "s") ? t.evening : t.night;
+}
+function headBtns(){
+  return '<button class="iconbtn" data-act="settings" aria-label="'+T().setT+'">⚙</button>' + langBtn();
+}
+
+function dhikrRow(a, withDetail){
+  const t = T();
+  const c = countOf(a.id);
+  const goal = tgt(a);
+  const pct = c / goal;
+  const done = c >= goal;
+  return '<div class="row" data-open="'+a.id+'">' +
+    '<div class="info">' +
+      '<div class="t">'+esc(a.name[lang])+'</div>' +
+      (withDetail
+        ? '<div class="arline ar">'+a.ar+'</div>' +
+          '<div class="s">'+esc(a.desc[lang])+'</div>' +
+          '<div class="srcline">'+t.source+esc(a.src[lang])+'</div>'
+        : '<div class="s">'+t.goal(goal)+(done?t.accomplished:'')+'</div>') +
+    '</div>' +
+    '<div class="ring'+(done?' done':'')+'">'+ringSvg(pct,done)+'<div class="n">'+(done?'✓':c)+'</div></div>' +
+  '</div>';
+}
+
+function frDate(){
+  return new Date().toLocaleDateString(T().locale,{weekday:"long", day:"numeric", month:"long"});
+}
+
+function renderHome(){
+  const t = T();
+  const s = streak(), tot = dayTotal(today()), goals = goalsDone();
+  const suggested = dayPart();
+  const sugDone = checklistDone(today(), suggested);
+  let html = '' +
+  '<div class="top"><div><div class="salam">'+t.salam+'</div>' +
+  '<div class="date">'+frDate()+'</div></div>' +
+  '<div class="topright">'+headBtns()+'</div></div>' +
+  '<div class="bismillah ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>' +
+
+  '<div class="hero">' +
+    '<div class="card"><div class="big gold">'+s+' 🔥</div><div class="cap">'+t.streakCap(s)+'</div></div>' +
+    '<div class="card"><div class="big">'+tot+'</div><div class="cap">'+t.todayCap+'</div></div>' +
+    '<div class="card"><div class="big">'+goals+'/'+(ADHKAR.length+3)+'</div><div class="cap">'+t.goalsCap+'</div></div>' +
+  '</div>' +
+  '<div class="day-ok" style="'+(daySuccess(today())?'display:block':'')+'">'+t.dayOk+'</div>';
+
+  const pt = prayerTimes();
+  if (pt){
+    const np = nextPrayer(), cp = currentPrayer();
+    html += '<div class="card" style="margin-top:14px">' +
+      '<div class="nextpr"><span class="nm">'+t.nextIs+' · '+t.prNames[np.key]+'</span>' +
+      '<span class="cd">'+t.inTime(Math.floor(np.in/60), np.in%60)+'</span></div>' +
+      '<div class="prayers">';
+    PR_ORDER.forEach(k => {
+      html += '<div class="pr'+(k===cp?' now':'')+'">' +
+        '<div class="pn">'+t.prNames[k]+'</div><div class="pt">'+esc(pt[k])+'</div></div>';
+    });
+    html += '</div></div>';
+  }
+
+  html += '<div class="label">'+(suggested==="m" ? t.momentM : suggested==="s" ? t.momentS : t.momentN)+'</div>' +
+  '<div class="row" data-checklist="'+suggested+'">' +
+    '<div class="info"><div class="t">'+partTitle(suggested)+'</div>' +
+    '<div class="s">'+(sugDone?t.doneToday:t.checklistOf(CHECK[suggested].length))+'</div></div>' +
+    '<div class="ring'+(sugDone?' done':'')+'">'+ringSvg(CHECK[suggested].filter(it=>today().check[suggested].includes(it.id)).length/CHECK[suggested].length, sugDone)+'<div class="n">'+(sugDone?'✓':'')+'</div></div>' +
+  '</div>' +
+
+  '<div class="label">'+t.goalsLabel+'</div>';
+  ADHKAR.forEach(a => { html += dhikrRow(a, false); });
+
+  html += '<p class="footer-note">'+t.betaNote+'</p>';
+  view.innerHTML = html;
+}
+
+function renderAdhkar(){
+  const t = T();
+  let html = '<div class="top"><div class="salam">'+t.adhkarTitle+'</div>' +
+    '<div class="topright">'+headBtns()+'</div></div>' +
+    '<div class="sub" style="margin-bottom:16px">'+t.adhkarSub+'</div>';
+
+  html += '<div class="chips">' +
+    '<div class="chip'+(checkPart==="m"?' on':'')+'" data-part="m">'+t.chipM+'</div>' +
+    '<div class="chip'+(checkPart==="s"?' on':'')+'" data-part="s">'+t.chipS+'</div>' +
+    '<div class="chip'+(checkPart==="n"?' on':'')+'" data-part="n">'+t.chipN+'</div>' +
+  '</div>';
+
+  const day = today();
+  const items = CHECK[checkPart];
+  const done = items.filter(it => day.check[checkPart].includes(it.id)).length;
+  html += '<div class="card">' +
+    '<h3>'+partTitle(checkPart)+'</h3>' +
+    '<div class="sub">'+t.doneOf(done, items.length)+' · '+t.readHint+'</div>' +
+    '<div class="progressline"><i style="width:'+(100*done/items.length)+'%"></i></div>';
+  items.forEach(it => {
+    const on = day.check[checkPart].includes(it.id);
+    const key = checkPart+":"+it.id;
+    const exp = expanded.has(key);
+    html += '<div class="chk'+(on?' on':'')+(exp?' exp':'')+'">' +
+      '<div class="boxwrap" data-check="'+it.id+'"><div class="box">✓</div></div>' +
+      '<div class="chkbody" data-exp="'+key+'">' +
+        '<div class="t">'+esc(it.t[lang])+'</div>' +
+        '<div class="d">'+esc(it.d[lang])+' <span class="caret">'+(exp?'▴':'▾')+'</span></div>' +
+        '<div class="details">' +
+          (it.txt ? '<div class="fulltext ar">'+it.txt+'</div>' : '') +
+          (it.tr && lang === "fr" ? '<div class="trad">'+esc(it.tr)+'</div>' : '') +
+          (it.fadl ? '<div class="fadl">✦ '+esc(it.fadl[lang])+'</div>' : '') +
+          (it.src ? '<div class="srcline">'+t.source+esc(it.src[lang])+'</div>' : '') +
+        '</div>' +
+      '</div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="label">'+t.counters+'</div>';
+  ADHKAR.forEach(a => { html += dhikrRow(a, true); });
+  view.innerHTML = html;
+}
+
+function renderStats(){
+  const t = T();
+  const s = streak();
+  let life = 0, bestDay = 0;
+  for (const k in db.days){ const dt = dayTotal(db.days[k]); life += dt; if (dt > bestDay) bestDay = dt; }
+
+  let bars = [], max = 1;
+  for (let i=6;i>=0;i--){
+    const x = new Date(); x.setDate(x.getDate()-i);
+    const v = dayTotal(db.days[dateKey(x)]);
+    bars.push({ l:t.dayLetters[x.getDay()], v:v, today:i===0 });
+    if (v > max) max = v;
+  }
+
+  let html = '<div class="top"><div class="salam">'+t.statsTitle+'</div>' +
+  '<div class="topright">'+headBtns()+'</div></div>' +
+  '<div class="statgrid" style="margin-top:10px">' +
+    '<div class="card"><div class="big" style="color:var(--gold)">'+s+' 🔥</div><div class="cap sub">'+t.streakCur+'</div></div>' +
+    '<div class="card"><div class="big">'+dayTotal(today())+'</div><div class="cap sub">'+t.todayLbl+'</div></div>' +
+    '<div class="card"><div class="big">'+life+'</div><div class="cap sub">'+t.lifeLbl+'</div></div>' +
+    '<div class="card"><div class="big">'+bestDay+'</div><div class="cap sub">'+t.bestLbl+'</div></div>' +
+  '</div>' +
+  '<div class="card" style="margin-top:14px"><h3>'+t.last7+'</h3><div class="bars">';
+  bars.forEach(b => {
+    const h = Math.max(3, Math.round(92 * b.v / max));
+    html += '<div class="bar'+(b.today?' today':'')+'"><span class="v">'+(b.v||'')+'</span><i style="height:'+h+'px"></i><b>'+b.l+'</b></div>';
+  });
+  html += '</div></div>';
+
+  html += '<div class="card"><h3>'+t.goalsLabel+'</h3><div class="sub" style="margin-bottom:6px">'+t.regularity+'</div>';
+  ADHKAR.forEach(a => {
+    const c = countOf(a.id), goal = tgt(a);
+    html += '<div class="statrow">' +
+      '<span>'+esc(a.name[lang])+'</span>' +
+      '<span class="val'+(c>=goal?' ok':'')+'">'+(c>=goal?'✓ ':'')+c+' / '+goal+'</span></div>';
+  });
+  const fc = countOf("free");
+  if (fc > 0){
+    html += '<div class="statrow"><span>'+t.freeLbl+' 📿</span><span class="val">'+fc+'</span></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="card"><h3>'+t.badgesT+'</h3><div class="badges">';
+  BADGES.forEach(b => {
+    const ok = b.ok();
+    html += '<div class="bdg'+(ok?'':' off')+'"><div class="e">'+b.e+'</div>' +
+      '<div class="n">'+esc(b.n[lang])+'</div><div class="c">'+esc(b.c[lang])+'</div></div>';
+  });
+  html += '</div></div>' +
+  '<p class="footer-note">'+t.hadithFooter+'</p>';
+  view.innerHTML = html;
+}
+
+function renderAmis(){
+  const t = T();
+  let html = '<div class="top"><div class="salam">'+t.amisTitle+'</div>' +
+    '<div class="topright">'+headBtns()+'</div></div>';
+
+  if (FB.state === "unconfigured"){
+    html += '<div class="card"><span class="badge">Setup</span><h3>'+t.setupTitle+'</h3>' +
+      '<div class="sub" style="margin-top:6px;line-height:1.7">'+t.setupBody+'</div></div>';
+    view.innerHTML = html; return;
+  }
+  if (FB.state === "off" || FB.state === "connecting"){
+    html += '<div class="card"><div class="sub">'+t.connecting+'</div></div>';
+    view.innerHTML = html; return;
+  }
+  if (FB.state === "error"){
+    html += '<div class="card"><div class="err">'+t.fbError+esc(FB.msg)+'</div></div>';
+    view.innerHTML = html; return;
+  }
+
+  /* connecté */
+  if (!db.profileName){
+    html += '<div class="card"><h3>'+t.askName+'</h3><div class="sub">'+t.askNameSub+'</div>' +
+      '<input class="input" id="inp-name" maxlength="20" placeholder="'+t.namePh+'">' +
+      '<button class="btn wide" data-act="saveName">'+t.letsgo+'</button></div>';
+    view.innerHTML = html; return;
+  }
+
+  if (!db.groupList.length || addingGroup){
+    html += '<div class="card"><h3>'+t.createGroupT+'</h3><div class="sub">'+t.createGroupSub+'</div>' +
+      '<input class="input" id="inp-gname" maxlength="30" placeholder="'+t.groupNamePh+'">' +
+      '<button class="btn wide" data-act="createGroup">'+t.createBtn+'</button></div>';
+    html += '<div class="card"><h3>'+t.joinT+'</h3><div class="sub">'+t.joinSub+'</div>' +
+      '<input class="input" id="inp-gcode" maxlength="6" placeholder="'+t.codePh+'" style="text-transform:uppercase;letter-spacing:.2em;text-align:center">' +
+      '<button class="btn ghost wide" data-act="joinGroup">'+t.joinBtn+'</button>' +
+      (amisErr?'<div class="err">'+esc(amisErr)+'</div>':'') + '</div>';
+    if (db.groupList.length){
+      html += '<button class="btn ghost wide" data-act="cancelAdd">'+t.cancel+'</button>';
+    }
+    view.innerHTML = html; return;
+  }
+
+  /* sélecteur de groupes */
+  html += '<div class="label">'+t.myGroups+'</div><div class="chips" style="flex-wrap:wrap">';
+  db.groupList.forEach(g => {
+    html += '<div class="chip'+(g.code===db.activeGroup?' on':'')+'" style="flex:1 1 auto" data-gsel="'+esc(g.code)+'">'+esc(g.name)+'</div>';
+  });
+  html += '<div class="chip" style="flex:0 0 auto" data-act="addGroup">'+t.addGroup+'</div></div>';
+
+  if (!group){
+    html += '<div class="card"><div class="sub">'+t.connecting+'</div></div>';
+    view.innerHTML = html; return;
+  }
+
+  /* groupe actif */
+  html += '<div class="card"><h3>'+esc(group.name||db.activeGroup)+'</h3>' +
+    '<div class="sub">'+t.inviteCode+'</div>' +
+    '<div class="codebox">'+esc(db.activeGroup)+'</div>' +
+    '<button class="btn wide" style="margin-top:8px" data-act="whatsapp">'+t.whatsapp+'</button>' +
+    '<button class="btn ghost wide" style="margin-top:8px;color:var(--danger)" data-act="leaveGroup">'+t.leave+'</button></div>';
+
+  /* streak d'équipe */
+  const ts = teamStatus();
+  if (ts){
+    html += '<div class="card"><h3>'+t.teamT+'</h3>' +
+      '<div class="teamline"><span class="big">'+ts.streak+' 🔥</span>' +
+      '<div class="sub">'+(ts.allOk ? t.teamAllOk :
+        (ts.missing.length <= 3 ? t.teamMissing(ts.missing.map(esc).join(", ")) : t.teamExplain))+'</div></div></div>';
+  }
+
+  /* membres */
+  const tk = dateKey();
+  const members = Object.entries(group.members||{}).map(([uid,m]) => ({
+    uid, name:m.name||"?", today:(m.date===tk? m.today||0 : 0), streak:m.streak||0
+  })).sort((a,b)=> b.today - a.today);
+  html += '<div class="card"><h3>'+t.membersT+'</h3>';
+  members.forEach(m => {
+    html += '<div class="member"><span class="nm">'+esc(m.name)+
+      (m.uid===FB.uid?' <span class="me">('+t.me+')</span>':'')+'</span>' +
+      '<span class="st">'+t.memberDhikr(m.today)+' · '+m.streak+' 🔥</span></div>';
+  });
+  html += '</div>';
+
+  /* mur de dou'as */
+  html += '<div class="label">'+t.duaT+' 🤲</div><div class="card">' +
+    '<input class="input" id="inp-dua" maxlength="140" placeholder="'+t.duaPh+'">' +
+    '<button class="btn wide" data-act="postDua">'+t.duaPost+'</button>' +
+    (amisErr?'<div class="err">'+esc(amisErr)+'</div>':'');
+  duas.forEach(d => {
+    const n = Object.keys(d.amin||{}).length;
+    const mine = d.uid === FB.uid;
+    const did = d.amin && d.amin[FB.uid];
+    html += '<div class="dua"><div class="tx">'+esc(d.text)+'</div>' +
+      '<div class="by">'+esc(d.name)+(mine?' ('+t.me+')':'')+'</div>' +
+      '<div class="actions"><button class="duabtn'+(did?' done':'')+'" data-amin="'+d.id+'">🤲 '+(n||'')+' '+(did?t.duaDone:t.duaBtn)+'</button>' +
+      (mine?'<button class="delbtn" data-deldua="'+d.id+'">'+t.del+'</button>':'') +
+      '</div></div>';
+  });
+  html += '</div>';
+
+  /* défis */
+  html += '<div class="label">'+t.chT+'</div>';
+  if (!challenges.length){
+    html += '<div class="card"><div class="sub">'+t.noCh+'</div></div>';
+  }
+  challenges.forEach(ch => {
+    const race = ch.mode === "race";
+    const total = ch.total||0;
+    const contribs = Object.entries(ch.progress||{}).map(([uid,p]) => ({uid, name:p.name||"?", n:p.n||0}))
+      .sort((a,b)=> b.n - a.n);
+    const title = esc(typeof ch.title==="object"? (ch.title[lang]||ch.title.fr) : ch.title);
+    if (race){
+      html += '<div class="card">' +
+        (ch.winner?'<span class="badge">'+t.raceWin(esc(ch.winner.name||"?"))+'</span>':'') +
+        '<h3>⚔️ '+title+'</h3>' +
+        '<div class="arline ar" style="margin:4px 0 6px">'+esc(ch.ar||"")+'</div>' +
+        '<div class="sub">'+t.raceHint+' ('+ch.target+')</div>';
+      contribs.forEach(c => {
+        const p = Math.min(100, 100*c.n/(ch.target||1));
+        html += '<div class="contrib" style="padding-top:6px"><b>'+esc(c.name)+(c.uid===FB.uid?' ('+t.me+')':'')+'</b><span>'+c.n+' / '+ch.target+'</span></div>' +
+          '<div class="progressline" style="margin:2px 0 4px"><i class="'+(c.n>=ch.target?'gold':'')+'" style="width:'+p+'%"></i></div>';
+      });
+      html += '<button class="btn wide" style="margin-top:10px" data-chal="'+ch.id+'">'+t.join2+'</button>' +
+        (ch.createdBy===FB.uid
+          ? '<div style="text-align:center;margin-top:4px"><button class="delbtn" style="margin:0" data-delch="'+ch.id+'">'+t.delCh+'</button></div>'
+          : '') +
+        '</div>';
+    } else {
+      const pct = Math.min(100, 100*total/(ch.target||1));
+      const done = total >= ch.target;
+      html += '<div class="card">' +
+        (done?'<span class="badge">'+t.reachedCh+'</span>':'') +
+        '<h3>'+title+'</h3>' +
+        '<div class="arline ar" style="margin:4px 0 6px">'+esc(ch.ar||"")+'</div>' +
+        '<div class="sub" style="font-variant-numeric:tabular-nums">'+t.liveLine(total, ch.target)+'</div>' +
+        '<div class="progressline"><i class="'+(done?'gold':'')+'" style="width:'+pct+'%"></i></div>';
+      contribs.forEach(c => {
+        html += '<div class="contrib"><b>'+esc(c.name)+(c.uid===FB.uid?' ('+t.me+')':'')+'</b><span>'+c.n+'</span></div>';
+      });
+      html += '<button class="btn wide" style="margin-top:10px" data-chal="'+ch.id+'">'+t.join2+'</button>' +
+        (ch.createdBy===FB.uid
+          ? '<div style="text-align:center;margin-top:4px"><button class="delbtn" style="margin:0" data-delch="'+ch.id+'">'+t.delCh+'</button></div>'
+          : '') +
+        '</div>';
+    }
+  });
+
+  /* créer un défi */
+  html += '<div class="card"><h3>'+t.newCh+'</h3>' +
+    '<div class="sub" style="margin-top:4px">'+t.presetLbl+'</div><div class="presets">';
+  PRESETS.forEach((p,i) => {
+    html += '<button class="btn ghost" data-preset="'+i+'">'+t.presets[i].label+'</button>';
+  });
+  html += '</div><div class="sub">'+t.customT+'</div>' +
+    '<div class="sub" style="margin-top:8px">'+t.modeLbl+'</div>' +
+    '<div class="chips" style="margin:8px 0">' +
+      '<div class="chip'+(newChMode==="team"?' on':'')+'" data-mode="team">'+t.modeTeam+'</div>' +
+      '<div class="chip'+(newChMode==="race"?' on':'')+'" data-mode="race">'+t.modeRace+'</div>' +
+    '</div>' +
+    (newChMode==="race"?'<div class="sub" style="margin-bottom:4px">'+t.raceHint+'</div>':'') +
+    '<select class="input" id="sel-formula">';
+  FREE_FORMULAS.forEach((f,i) => {
+    html += '<option value="'+i+'">'+esc(f.lat)+' — '+f.ar+'</option>';
+  });
+  html += '</select>' +
+    '<input class="input" id="inp-target" type="number" inputmode="numeric" min="10" placeholder="'+t.targetPh+'">' +
+    '<button class="btn wide" data-act="launch">'+t.launch+'</button></div>';
+
+  view.innerHTML = html;
+}
+
+function renderSettings(){
+  const t = T();
+  let html = '<div class="top"><div class="salam">'+t.setT+'</div>' +
+    '<div class="topright">'+langBtn()+'</div></div>' +
+    '<button class="btn ghost wide" style="margin:10px 0 14px" data-act="back">'+t.back+'</button>';
+
+  /* prénom */
+  html += '<div class="card"><h3>'+t.nameLbl+'</h3><div class="sub">'+t.nameSub+'</div>' +
+    '<input class="input" id="set-name" maxlength="20" value="'+esc(db.profileName||"")+'" placeholder="'+t.namePh+'">' +
+    '<button class="btn wide" data-act="saveName2">'+t.saveBtn+'</button></div>';
+
+  /* apparence */
+  html += '<div class="card">' +
+    '<div class="setrow"><div><div class="k">'+t.themeLbl+'</div><div class="kk">'+t.themeSub+'</div></div>' +
+      '<div class="seg">' +
+        '<button class="'+(db.theme==="auto"?"on":"")+'" data-theme="auto">'+t.thAuto+'</button>' +
+        '<button class="'+(db.theme==="light"?"on":"")+'" data-theme="light">'+t.thLight+'</button>' +
+        '<button class="'+(db.theme==="dark"?"on":"")+'" data-theme="dark">'+t.thDark+'</button>' +
+      '</div></div>' +
+    '<div class="setrow"><div><div class="k">'+t.vibeLbl+'</div><div class="kk">'+t.vibeSub+'</div></div>' +
+      '<div class="seg">' +
+        '<button class="'+(!db.novibe?"on":"")+'" data-vibe="1">'+t.on+'</button>' +
+        '<button class="'+(db.novibe?"on":"")+'" data-vibe="0">'+t.off+'</button>' +
+      '</div></div></div>';
+
+  /* notifications */
+  html += '<div class="card"><h3>'+t.notifT+'</h3>' +
+    '<div class="sub" style="margin:6px 0 10px;line-height:1.6">'+t.notifSub+'</div>';
+  if (!pushSupported()){
+    html += '<div class="sub">'+t.notifUnsupported+'</div>';
+  } else if (!db.groupList.length){
+    html += '<div class="sub">'+t.notifNoGroup+'</div>';
+  } else if (db.push && window.Notification && Notification.permission === "granted"){
+    html += '<div class="k" style="color:var(--emerald);margin-bottom:10px">'+t.notifActive+'</div>' +
+      '<button class="btn ghost wide" style="color:var(--danger)" data-act="notifOff">'+t.notifOff+'</button>';
+  } else {
+    html += '<button class="btn wide" data-act="notifOn">'+t.notifOn+'</button>';
+  }
+  html += '<div class="sub" style="margin-top:10px;font-size:11.5px;line-height:1.6">'+t.notifIos+'</div>';
+  if (notifMsg) html += '<div class="err">'+esc(notifMsg)+'</div>';
+  html += '</div>';
+
+  /* horaires de prière */
+  html += '<div class="card"><h3>'+t.prayerT+'</h3>';
+  if (!db.geo){
+    html += '<div class="sub" style="margin:6px 0 10px;line-height:1.6">'+t.prayerOff+'</div>' +
+      '<button class="btn wide" data-act="geo">'+t.prayerBtn+'</button>';
+  } else {
+    html += '<div class="sub" style="margin:6px 0">📍 '+db.geo.lat+', '+db.geo.lon+'</div>' +
+      '<div class="setrow"><div class="k">'+t.methodLbl+'</div>' +
+      '<select class="input" id="set-method" style="margin:0">';
+    t.methods.forEach(m => {
+      html += '<option value="'+m.v+'"'+(String(db.geo.method)===String(m.v)?' selected':'')+'>'+esc(m.l)+'</option>';
+    });
+    html += '</select></div>' +
+      '<button class="btn wide" style="margin-top:10px" data-act="saveMethod">'+t.saveBtn+'</button>' +
+      '<button class="btn ghost wide" style="margin-top:8px;color:var(--danger)" data-act="geoOff">'+t.prayerOffBtn+'</button>';
+  }
+  if (prayerMsg) html += '<div class="err">'+esc(prayerMsg)+'</div>';
+  html += '</div>';
+
+  /* objectifs personnalisés */
+  html += '<div class="card"><h3>'+t.goalsCustom+'</h3>' +
+    '<div class="sub" style="margin:4px 0 8px;line-height:1.6">'+t.goalsCustomSub+'</div>';
+  ADHKAR.forEach(a => {
+    html += '<div class="goalrow"><span class="nm">'+esc(a.name[lang])+'</span>' +
+      (a.chain
+        ? '<span class="sub">'+t.fixedGoal+'</span>'
+        : '<input type="number" inputmode="numeric" min="1" max="100000" data-goal="'+a.id+'" ' +
+          'value="'+(db.targets[a.id]||"")+'" placeholder="'+a.target+'">') +
+      '</div>';
+  });
+  html += '<button class="btn wide" style="margin-top:12px" data-act="saveGoals">'+t.saveBtn+'</button>' +
+    '<button class="btn ghost wide" style="margin-top:8px" data-act="resetGoals">'+t.resetGoals+'</button></div>';
+
+  view.innerHTML = html;
+}
+
+function render(){
+  document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+  document.documentElement.lang = lang;
+  if (tab==="home") renderHome();
+  else if (tab==="adhkar") renderAdhkar();
+  else if (tab==="amis") renderAmis();
+  else if (tab==="settings") renderSettings();
+  else renderStats();
+  document.getElementById("lbl-home").textContent = T().navHome;
+  document.getElementById("lbl-adhkar").textContent = T().navAdhkar;
+  document.getElementById("lbl-stats").textContent = T().navStats;
+  document.getElementById("lbl-free").textContent = T().navFree;
+  document.getElementById("lbl-amis").textContent = T().navAmis;
+  ["home","adhkar","stats","amis"].forEach(x => {
+    document.getElementById("nav-"+x).classList.toggle("on", tab===x);
+  });
+}
+
+/* view interactions (delegated) */
+view.addEventListener("click", async (e) => {
+  const lg = e.target.closest("[data-lang]");
+  if (lg){ lang = (lang==="fr") ? "ar" : "fr"; db.lang = lang; save(); render(); return; }
+  const th = e.target.closest("[data-theme]");
+  if (th){ db.theme = th.getAttribute("data-theme"); applyTheme(); save(); render(); return; }
+  const vb = e.target.closest("[data-vibe]");
+  if (vb){ db.novibe = vb.getAttribute("data-vibe") === "0"; save(); vibrate(25); render(); return; }
+  const open = e.target.closest("[data-open]");
+  if (open){ openCounter(open.getAttribute("data-open")); return; }
+  const cl = e.target.closest("[data-checklist]");
+  if (cl){ checkPart = cl.getAttribute("data-checklist"); tab = "adhkar"; render(); return; }
+  const part = e.target.closest("[data-part]");
+  if (part){ checkPart = part.getAttribute("data-part"); render(); return; }
+  const chk = e.target.closest("[data-check]");
+  if (chk){
+    const id = chk.getAttribute("data-check");
+    const arr = today().check[checkPart];
+    const i = arr.indexOf(id);
+    if (i >= 0) arr.splice(i,1); else { arr.push(id); vibrate(15); }
+    save(); render();
+    return;
+  }
+  const ex = e.target.closest("[data-exp]");
+  if (ex){
+    const k = ex.getAttribute("data-exp");
+    if (expanded.has(k)) expanded.delete(k); else expanded.add(k);
+    render();
+    return;
+  }
+  /* --- amis --- */
+  const gsel = e.target.closest("[data-gsel]");
+  if (gsel){
+    const code = gsel.getAttribute("data-gsel");
+    if (code !== db.activeGroup){ switchGroup(code); }
+    render(); return;
+  }
+  const chal = e.target.closest("[data-chal]");
+  if (chal){ openChallenge(chal.getAttribute("data-chal")); return; }
+  const am = e.target.closest("[data-amin]");
+  if (am){ aminDua(am.getAttribute("data-amin")); return; }
+  const dd = e.target.closest("[data-deldua]");
+  if (dd){ if (confirm(T().delConfirm)) await delDua(dd.getAttribute("data-deldua")); return; }
+  const dc = e.target.closest("[data-delch]");
+  if (dc){ if (confirm(T().delChConfirm)) await delChallenge(dc.getAttribute("data-delch")); return; }
+  const md = e.target.closest("[data-mode]");
+  if (md){ newChMode = md.getAttribute("data-mode"); render(); return; }
+  const preset = e.target.closest("[data-preset]");
+  if (preset){
+    const p = PRESETS[parseInt(preset.getAttribute("data-preset"),10)];
+    try{ await launchChallenge(p.t, p.ar, p.target); }catch(err){ amisErr = err.message; }
+    render(); return;
+  }
+  const act = e.target.closest("[data-act]");
+  if (act){
+    const a = act.getAttribute("data-act");
+    amisErr = "";
+    try{
+      if (a === "saveName"){
+        const v = (document.getElementById("inp-name")||{}).value || "";
+        if (v.trim()){ db.profileName = v.trim(); save(); render(); }
+      } else if (a === "addGroup"){
+        addingGroup = true; render();
+      } else if (a === "cancelAdd"){
+        addingGroup = false; render();
+      } else if (a === "leaveGroup"){
+        const g = db.groupList.find(x => x.code === db.activeGroup);
+        if (g && confirm(T().leaveConfirm(g.name))){ await leaveGroup(); render(); }
+      } else if (a === "createGroup"){
+        const v = (document.getElementById("inp-gname")||{}).value || "";
+        act.disabled = true;
+        await createGroup(v.trim());
+        render();
+      } else if (a === "joinGroup"){
+        const v = (document.getElementById("inp-gcode")||{}).value || "";
+        if (v.trim().length >= 4){ act.disabled = true; await joinGroup(v); render(); }
+      } else if (a === "launch"){
+        const idx = parseInt((document.getElementById("sel-formula")||{}).value || "0",10);
+        const tgt = (document.getElementById("inp-target")||{}).value;
+        const f = FREE_FORMULAS[idx] || FREE_FORMULAS[0];
+        if (tgt){ await launchChallenge({fr:f.lat, ar:f.ar}, f.ar, tgt, newChMode); render(); }
+      } else if (a === "postDua"){
+        const v = (document.getElementById("inp-dua")||{}).value || "";
+        if (v.trim()){ await postDua(v.trim().slice(0,140)); render(); }
+      } else if (a === "whatsapp"){
+        const g = db.groupList.find(x => x.code === db.activeGroup);
+        const url = "https://wa.me/?text=" + encodeURIComponent(
+          T().waText(g ? g.name : "Adhkar", db.activeGroup, location.origin + location.pathname));
+        window.open(url, "_blank");
+      } else if (a === "settings"){
+        tab = "settings"; prayerMsg = ""; notifMsg = ""; render();
+      } else if (a === "notifOn"){
+        await enableNotifs();
+      } else if (a === "notifOff"){
+        await disableNotifs();
+      } else if (a === "back"){
+        tab = "home"; render();
+      } else if (a === "saveName2"){
+        const v = (document.getElementById("set-name")||{}).value || "";
+        if (v.trim()){ db.profileName = v.trim(); lastStatsPush = 0; save(); vibrate(20); render(); }
+      } else if (a === "saveGoals"){
+        document.querySelectorAll("[data-goal]").forEach(inp => {
+          const id = inp.getAttribute("data-goal");
+          const n = parseInt(inp.value, 10);
+          if (n > 0) db.targets[id] = Math.min(n, 100000);
+          else delete db.targets[id];
+        });
+        save(); vibrate(20); render();
+      } else if (a === "resetGoals"){
+        db.targets = {}; save(); render();
+      } else if (a === "geo"){
+        askGeo();
+      } else if (a === "geoOff"){
+        db.geo = null; db.prayer = null; prayerMsg = ""; save(); render();
+      } else if (a === "saveMethod"){
+        const m = parseInt((document.getElementById("set-method")||{}).value, 10);
+        if (m && db.geo){ db.geo.method = m; db.prayer = null; save(); render(); fetchPrayer(); }
+      }
+    }catch(err){ amisErr = err && err.message ? err.message : String(err); render(); }
+    return;
+  }
+});
+document.getElementById("nav-home").addEventListener("click", ()=>{ tab="home"; render(); });
+document.getElementById("nav-adhkar").addEventListener("click", ()=>{ tab="adhkar"; render(); });
+document.getElementById("nav-stats").addEventListener("click", ()=>{ tab="stats"; render(); });
+document.getElementById("nav-amis").addEventListener("click", ()=>{ tab="amis"; render(); });
+document.getElementById("nav-free").addEventListener("click", ()=>{ openCounter("free"); });
+
+/* ================= COUNTER ================= */
+const RING_C = 565.5;
+const cEl = document.getElementById("counter");
+const cAr = document.getElementById("c-ar");
+const cLat = document.getElementById("c-lat");
+const cCount = document.getElementById("c-count");
+const cTarget = document.getElementById("c-target");
+const cRing = document.getElementById("c-ring");
+const cPhase = document.getElementById("c-phase");
+const cNum = document.getElementById("c-num");
+const cLive = document.getElementById("c-live");
+const milestone = document.getElementById("milestone");
+const celebrate = document.getElementById("celebrate");
+
+let cur = null;
+let lastTap = 0;
+let freeIdx = 0;
+
+function phaseOf(a, count){
+  if (!a.chain) return null;
+  let acc = 0;
+  for (let i=0;i<a.chain.length;i++){
+    const p = a.chain[i];
+    if (count < acc + p.n) return { idx:i, inPhase:count-acc, target:p.n };
+    acc += p.n;
+  }
+  const last = a.chain[a.chain.length-1];
+  return { idx:a.chain.length-1, inPhase:last.n, target:last.n };
+}
+
+function paintCounter(){
+  if (!cur) return;
+  const t = T();
+  if (cur.challenge){
+    const ch = challenges.find(c => c.id === cur.cid);
+    const baseTotal = ch ? (ch.total||0) : cur.total0;
+    const baseMine = ch && ch.progress && ch.progress[FB.uid] ? (ch.progress[FB.uid].n||0) : 0;
+    const extra = (pend.cid === cur.cid) ? pend.n : 0;
+    const total = baseTotal + extra;
+    const mine = baseMine + extra;
+    cAr.textContent = cur.ar;
+    cLat.textContent = cur.title;
+    cCount.textContent = mine;
+    cPhase.innerHTML = "";
+    if (cur.mode === "race"){
+      const others = ch ? Object.entries(ch.progress||{})
+        .filter(([uid]) => uid !== FB.uid)
+        .map(([,p]) => ({name:p.name||"?", n:p.n||0}))
+        .sort((a,b)=> b.n - a.n).slice(0,3) : [];
+      cTarget.textContent = "/ " + cur.target;
+      cLive.textContent = (ch && ch.winner)
+        ? t.raceWin(ch.winner.name||"?")
+        : others.map(o => o.name+" "+o.n).join(" · ");
+      cRing.style.strokeDashoffset = (RING_C * (1 - Math.min(mine/cur.target,1))).toFixed(1);
+    } else {
+      cTarget.textContent = "";
+      cLive.textContent = t.liveLine(total, cur.target) + (total >= cur.target ? " · " + t.reachedCh : "");
+      cRing.style.strokeDashoffset = (RING_C * (1 - Math.min(total/cur.target,1))).toFixed(1);
+    }
+    return;
+  }
+  const c = countOf(cur.id);
+  cLive.textContent = "";
+  if (cur.free){
+    const f = FREE_FORMULAS[freeIdx % FREE_FORMULAS.length];
+    cAr.textContent = f.ar;
+    cLat.textContent = (lang === "ar") ? t.freeSub : f.lat + " — " + t.freeSub;
+    cCount.textContent = c;
+    const laps = Math.floor(c / 33);
+    cTarget.textContent = (laps > 0) ? t.laps(laps) : "∞";
+    cRing.style.strokeDashoffset = (RING_C * (1 - (c % 33) / 33)).toFixed(1);
+    cPhase.innerHTML = "";
+    return;
+  }
+  if (cur.chain){
+    const ph = phaseOf(cur, Math.min(c, cur.target-0.001));
+    const done = c >= cur.target;
+    const p = cur.chain[ph.idx];
+    cAr.textContent = p.ar;
+    cLat.textContent = t.latLine(p.lat, p.n);
+    const shown = done ? p.n : ph.inPhase;
+    cCount.textContent = shown;
+    cTarget.textContent = "/ " + p.n + "  ·  " + t.totalLbl + " " + Math.min(c,cur.target) + "/100";
+    cRing.style.strokeDashoffset = (RING_C * (1 - Math.min(shown/p.n,1))).toFixed(1);
+    cPhase.innerHTML = cur.chain.map((_,i)=>'<i class="'+(i<=ph.idx?'on':'')+'"></i>').join("");
+  } else {
+    cAr.textContent = cur.ar;
+    cLat.textContent = (lang === "ar") ? cur.desc.ar : cur.lat;
+    cCount.textContent = c;
+    cTarget.textContent = "/ " + cur.target;
+    cRing.style.strokeDashoffset = (RING_C * (1 - Math.min(c/cur.target,1))).toFixed(1);
+    cPhase.innerHTML = "";
+  }
+}
+
+function openCounter(id){
+  if (id === "free") cur = FREE;
+  else {
+    const a = ADHKAR.find(x => x.id === id);
+    if (!a) return;
+    cur = Object.assign({}, a, { target: tgt(a) });   /* objectif personnalisé appliqué */
+  }
+  if (!cur) return;
+  document.getElementById("c-hint").textContent = T().hint;
+  const rb = document.getElementById("c-reset");
+  rb.style.display = ""; rb.textContent = T().reset;
+  document.getElementById("c-undo").style.display = "";
+  const fb = document.getElementById("c-formula");
+  fb.style.display = cur.free ? "" : "none";
+  fb.textContent = T().formula;
+  document.getElementById("c-add").textContent = T().addBtn;
+  document.getElementById("c-sub").textContent = T().subBtn;
+  celebrate.classList.remove("open");
+  cEl.classList.add("open");
+  paintCounter();
+}
+
+function openChallenge(cid){
+  const ch = challenges.find(c => c.id === cid);
+  if (!ch) return;
+  flushPending();
+  pend.cid = cid; pend.gcode = db.activeGroup; pend.n = 0;
+  cur = {
+    challenge:true, cid,
+    mode: ch.mode || "team",
+    ar: ch.ar || "",
+    title: (typeof ch.title === "object") ? (ch.title[lang]||ch.title.fr) : ch.title,
+    target: ch.target || 1,
+    total0: ch.total || 0
+  };
+  document.getElementById("c-hint").textContent = T().hint;
+  document.getElementById("c-reset").style.display = "none";
+  document.getElementById("c-undo").style.display = "none";
+  document.getElementById("c-formula").style.display = "none";
+  document.getElementById("c-add").textContent = T().addBtn;
+  document.getElementById("c-sub").textContent = T().subBtn;
+  celebrate.classList.remove("open");
+  cEl.classList.add("open");
+  paintCounter();
+}
+
+function closeCounter(){
+  flushPending();
+  cEl.classList.remove("open");
+  celebrate.classList.remove("open");
+  cur = null;
+  lastStatsPush = 0; pushStats();
+  render();
+}
+
+function showMilestone(text){
+  milestone.querySelector("span").textContent = text;
+  milestone.classList.remove("show");
+  void milestone.offsetWidth;
+  milestone.classList.add("show");
+}
+
+function ripple(e){
+  if (e && e.clientX != null){
+    const r = document.createElement("div");
+    const size = 130;
+    r.className = "ripple";
+    r.style.width = r.style.height = size+"px";
+    r.style.left = (e.clientX - size/2)+"px";
+    r.style.top = (e.clientY - size/2)+"px";
+    cEl.appendChild(r);
+    setTimeout(()=>r.remove(), 600);
+  }
+  cNum.classList.remove("pulse"); void cNum.offsetWidth; cNum.classList.add("pulse");
+}
+
+function tapCounter(e){
+  if (!cur) return;
+  const now = Date.now();
+  if (now - lastTap < 70) return;
+  lastTap = now;
+
+  if (cur.challenge){
+    pend.n++;
+    ripple(e);
+    const ch = challenges.find(c => c.id === cur.cid);
+    const mine = (ch && ch.progress && ch.progress[FB.uid] ? (ch.progress[FB.uid].n||0) : 0) + pend.n;
+    if (cur.mode === "race" && mine === cur.target){
+      vibrate([50,80,50,80,120]);
+      showMilestone("🏆");
+      flushPending();
+      if (ch && !ch.winner && FB.state === "ready"){
+        FB.f.setDoc(FB.f.doc(FB.db, "groups", pend.gcode, "challenges", cur.cid),
+          { winner: { uid: FB.uid, name: db.profileName || "?" } }, { merge:true }).catch(()=>{});
+      }
+    }
+    else if (mine % 33 === 0){ vibrate([30,40,30]); showMilestone(String(mine)); }
+    else vibrate(12);
+    paintCounter();
+    scheduleFlush();
+    return;
+  }
+
+  const day = today();
+  const before = day.counts[cur.id] || 0;
+
+  if (cur.free){
+    const c = before + 1;
+    day.counts.free = c;
+    save();
+    ripple(e);
+    if (c % 33 === 0){ vibrate([30,40,30]); showMilestone(String(c)); }
+    else vibrate(12);
+    paintCounter();
+    return;
+  }
+
+  if (before >= cur.target){
+    day.counts[cur.id] = before + 1;
+    save(); paintCounter();
+    vibrate(10);
+    return;
+  }
+  const c = before + 1;
+  day.counts[cur.id] = c;
+  save();
+  ripple(e);
+
+  if (c >= cur.target){
+    vibrate([40,60,40,60,80]);
+    paintCounter();
+    setTimeout(showCelebrate, 350);
+  } else if (cur.chain){
+    const ph = phaseOf(cur, c);
+    const phPrev = phaseOf(cur, c-1);
+    if (ph.idx !== phPrev.idx){
+      vibrate([35,50,35]);
+      const nextName = (lang === "ar") ? cur.chain[ph.idx].ar : cur.chain[ph.idx].lat;
+      showMilestone(T().nextPhase(phPrev.target, nextName));
+    } else vibrate(12);
+    paintCounter();
+  } else {
+    if (cur.target >= 100 && c % 33 === 0){ vibrate([30,40,30]); showMilestone(String(c)); }
+    else vibrate(12);
+    paintCounter();
+  }
+}
+
+function showCelebrate(){
+  const t = T();
+  document.getElementById("cel-title").textContent = t.goalReached;
+  document.getElementById("cel-ar").textContent = cur.celAr || "";
+  document.getElementById("cel-reward").textContent = cur.reward[lang] || "";
+  document.getElementById("cel-src").textContent = t.source + cur.src[lang];
+  document.getElementById("cel-again").textContent = t.again;
+  document.getElementById("cel-ok").textContent = t.hamd;
+  celebrate.classList.add("open");
+}
+
+cEl.addEventListener("pointerdown", (e) => {
+  if (e.target.closest("button")) return;
+  if (celebrate.classList.contains("open")) return;
+  tapCounter(e);
+});
+/* ajout en masse : dhikr faits en dehors de l'app */
+function addBulk(n){
+  vibrate([20,30,20]);
+  if (cur.challenge){
+    pend.n += n;
+    const ch = challenges.find(c => c.id === cur.cid);
+    const mine = (ch && ch.progress && ch.progress[FB.uid] ? (ch.progress[FB.uid].n||0) : 0) + pend.n;
+    if (cur.mode === "race" && mine >= cur.target){
+      flushPending();
+      if (ch && !ch.winner && FB.state === "ready"){
+        FB.f.setDoc(FB.f.doc(FB.db, "groups", pend.gcode, "challenges", cur.cid),
+          { winner: { uid: FB.uid, name: db.profileName || "?" } }, { merge:true }).catch(()=>{});
+      }
+      showMilestone("🏆");
+    } else {
+      showMilestone("+" + n);
+    }
+    paintCounter();
+    scheduleFlush();
+    return;
+  }
+  const day = today();
+  const before = day.counts[cur.id] || 0;
+  const c = before + n;
+  day.counts[cur.id] = c;
+  save();
+  if (!cur.free && before < cur.target && c >= cur.target){
+    vibrate([40,60,40,60,80]);
+    paintCounter();
+    setTimeout(showCelebrate, 350);
+  } else {
+    showMilestone("+" + n);
+    paintCounter();
+  }
+}
+document.getElementById("c-add").addEventListener("click", () => {
+  if (!cur) return;
+  const v = prompt(T().addPrompt);
+  if (v == null) return;
+  const n = Math.min(parseInt(v, 10) || 0, 5000);
+  if (n > 0) addBulk(n);
+});
+
+/* retrait en masse : corriger une erreur de comptage */
+function subBulk(n){
+  if (cur.challenge){
+    const ch = challenges.find(c => c.id === cur.cid);
+    const base = ch && ch.progress && ch.progress[FB.uid] ? (ch.progress[FB.uid].n||0) : 0;
+    const k = Math.min(n, base + pend.n);   /* jamais moins que sa propre contribution */
+    if (k <= 0) return;
+    pend.n -= k;
+    vibrate([20,30,20]);
+    showMilestone("−" + k);
+    paintCounter();
+    scheduleFlush();
+    return;
+  }
+  const day = today();
+  const before = day.counts[cur.id] || 0;
+  const k = Math.min(n, before);            /* jamais en dessous de zéro */
+  if (k <= 0) return;
+  day.counts[cur.id] = before - k;
+  save();
+  vibrate([20,30,20]);
+  showMilestone("−" + k);
+  paintCounter();
+}
+document.getElementById("c-sub").addEventListener("click", () => {
+  if (!cur) return;
+  const v = prompt(T().subPrompt);
+  if (v == null) return;
+  const n = Math.min(parseInt(v, 10) || 0, 100000);
+  if (n > 0) subBulk(n);
+});
+
+document.getElementById("c-close").addEventListener("click", closeCounter);
+document.getElementById("c-formula").addEventListener("click", () => {
+  if (!cur || !cur.free) return;
+  freeIdx = (freeIdx + 1) % FREE_FORMULAS.length;
+  vibrate(10);
+  paintCounter();
+});
+document.getElementById("c-undo").addEventListener("click", () => {
+  if (!cur || cur.challenge) return;
+  const day = today();
+  const c = day.counts[cur.id] || 0;
+  if (c > 0){ day.counts[cur.id] = c-1; save(); paintCounter(); }
+});
+document.getElementById("c-reset").addEventListener("click", () => {
+  if (!cur || cur.challenge) return;
+  if (confirm(T().resetConfirm)){
+    today().counts[cur.id] = 0; save(); paintCounter();
+  }
+});
+document.getElementById("cel-again").addEventListener("click", () => {
+  today().counts[cur.id] = 0; save();
+  celebrate.classList.remove("open");
+  paintCounter();
+});
+document.getElementById("cel-ok").addEventListener("click", closeCounter);
+
+/* anti-zoom : bloque le double-tap et le pincement pendant le dhikr */
+cEl.addEventListener("touchend", (e) => {
+  if (!e.target.closest("button")) e.preventDefault();
+}, {passive:false});
+document.addEventListener("gesturestart", (e) => e.preventDefault());
+document.addEventListener("dblclick", (e) => e.preventDefault());
+
+/* keyboard (desktop testing) */
+document.addEventListener("keydown", (e) => {
+  if (!cEl.classList.contains("open")) return;
+  if (e.code === "Space"){ e.preventDefault(); tapCounter(null); }
+  if (e.code === "Escape"){ closeCounter(); }
+});
+
+/* service worker : app disponible hors-ligne */
+if ("serviceWorker" in navigator){
+  navigator.serviceWorker.register("./sw.js").catch(()=>{});
+}
+
+render();
+initFirebase();
+if (db.geo) fetchPrayer();
+
+/* rafraîchit le compte à rebours des prières et bascule matin/soir automatiquement */
+setInterval(() => {
+  if (cEl.classList.contains("open")) return;
+  if (db.geo) fetchPrayer();
+  if (tab === "home") safeRender();
+}, 60000);
+</script>
+</body>
+</html>
