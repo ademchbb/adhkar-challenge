@@ -5,6 +5,15 @@
 [build]
   publish = "."
 
+# La clé d'API Firebase côté web (AIza...) est PUBLIQUE par conception : elle
+# identifie le projet, la sécurité vient des règles Firestore. Le détecteur
+# heuristique de Netlify la prend pour une fuite, on le désactive.
+# La vraie protection reste active : Netlify continue de vérifier que les
+# VALEURS de VAPID_PRIVATE et FIREBASE_SERVICE_ACCOUNT n'apparaissent nulle
+# part dans le site publié.
+[build.environment]
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
 [functions]
   directory = "functions"
   node_bundler = "esbuild"
